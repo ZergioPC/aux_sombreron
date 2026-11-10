@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwhqh4h0r3axf"]
+
+[ext_resource type="PackedScene" uid="uid://0g8ayfw57kht" path="res://Player/Modelo3D/Sombreron_V2_animations.glb" id="1_p116s"]
+[ext_resource type="Material" uid="uid://bscu1lucne28e" path="res://Player/Material/mat_sombreron.tres" id="2_fgx6g"]
+
+[node name="Sombreron_V2_animations" instance=ExtResource("1_p116s")]
+
+[node name="Skeleton3D" parent="SombreronV2" index="0"]
+bones/0/rotation = Quaternion(0.000153848, -7.96443e-16, 1.25955e-08, 1)
+bones/1/rotation = Quaternion(0, 0, 0, 1)
+bones/2/rotation = Quaternion(0, 0, 0, 1)
+bones/3/position = Vector3(0, 1.47955, 0)
+bones/3/rotation = Quaternion(0, 0, 0, 1)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(0, 0, 0, 1)
+bones/5/rotation = Quaternion(0.707107, 0, -0.707107, 0)
+bones/6/position = Vector3(0.155901, 0.778767, -0.00493429)
+bones/6/rotation = Quaternion(0.00374511, -0.0105519, 0.941435, -0.337009)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(0.00276426, 0.000147589, -0.0103143, 0.999943)
+bones/8/position = Vector3(0.574319, 1.21782, 0)
+bones/8/rotation = Quaternion(-0.5, -0.5, -0.5, 0.5)
+bones/8/scale = Vector3(1, 1, 1)
+bones/9/position = Vector3(-0.574319, 1.21782, 0)
+bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, 0.5)
+bones/9/scale = Vector3(1, 1, 1)
+bones/10/position = Vector3(0, 1.21782, -0.5)
+bones/10/rotation = Quaternion(-0.707107, 2.22045e-16, -1.40079e-16, 0.707107)
+bones/10/scale = Vector3(1, 1, 1)
+bones/11/position = Vector3(0, 1.21782, 0.5)
+bones/11/rotation = Quaternion(-8.88178e-16, 0.707107, 0.707107, -2.08167e-16)
+bones/11/scale = Vector3(1, 1, 1)
+bones/12/rotation = Quaternion(0.707107, 0, 0.707107, 0)
+bones/13/position = Vector3(-0.155901, 0.778767, -0.00493429)
+bones/13/rotation = Quaternion(-0.00374511, -0.0105519, 0.941435, 0.337009)
+bones/13/scale = Vector3(1, 1, 1)
+bones/14/rotation = Quaternion(0.00276426, -0.000147589, 0.0103143, 0.999943)
+
+[node name="Barba" parent="SombreronV2/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Bigote" parent="SombreronV2/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Brazo_D" parent="SombreronV2/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Brazo_I" parent="SombreronV2/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Cabello" parent="SombreronV2/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Cara" parent="SombreronV2/Skeleton3D" index="5"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Oreja_D" parent="SombreronV2/Skeleton3D" index="6"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Oreja_I" parent="SombreronV2/Skeleton3D" index="7"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Pierna_D" parent="SombreronV2/Skeleton3D" index="8"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Pierna_I" parent="SombreronV2/Skeleton3D" index="9"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Ruana" parent="SombreronV2/Skeleton3D" index="10"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Sombrero" parent="SombreronV2/Skeleton3D" index="11"]
+surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Torso" parent="SombreronV2/Skeleton3D" index="12"]
+surface_material_override/0 = ExtResource("2_fgx6g")
