@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmnskqo14y2ye"]
+
+[ext_resource type="PackedScene" uid="uid://chbbd361wodb1" path="res://Player/Modelo3D/Perro_V2_animations.glb" id="1_qjjo3"]
+
+[node name="Perro" instance=ExtResource("1_qjjo3")]
+
+[node name="Skeleton3D" parent="Empty/PerroRIG" index="0"]
+bones/0/position = Vector3(-0.00233092, 0.36669, -0.269803)
+bones/0/rotation = Quaternion(0.709448, 2.22708e-07, 2.21235e-07, 0.704757)
+bones/0/scale = Vector3(1, 1, 1)
+bones/1/rotation = Quaternion(0.00512567, -7.51141e-05, -0.000496369, 0.999987)
+bones/2/position = Vector3(5.42235e-09, 0.435864, 0.282059)
+bones/2/rotation = Quaternion(0.204029, -5.82258e-07, -1.27464e-07, 0.978965)
+bones/3/position = Vector3(5.42241e-09, 0.377385, -0.337577)
+bones/3/rotation = Quaternion(-0.628454, 6.31723e-16, 6.31726e-16, 0.777846)
+bones/4/position = Vector3(0.0901152, 0.364323, -0.24919)
+bones/4/rotation = Quaternion(0.999994, -2.22e-10, -1.19209e-07, 0.00342776)
+bones/4/scale = Vector3(1, 1, 1)
+bones/5/position = Vector3(0.0928536, 0.74922, 0.339004)
+bones/5/rotation = Quaternion(-0.0203868, 0.00377247, -0.327101, 0.944762)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/position = Vector3(-0.0901152, 0.364706, -0.249709)
+bones/6/rotation = Quaternion(0.999998, 4.04368e-10, 1.19209e-07, 0.00189795)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/position = Vector3(-0.0928511, 0.74922, 0.339004)
+bones/7/rotation = Quaternion(-0.0203867, -0.00377274, 0.327113, 0.944758)
+bones/7/scale = Vector3(1, 1, 1)
+bones/8/position = Vector3(0.0769276, 0.243186, 0.241691)
+bones/8/rotation = Quaternion(0.999991, -2.03739e-09, -4.76833e-07, -0.00427272)
+bones/9/position = Vector3(-0.0769276, 0.241747, 0.241381)
+bones/9/rotation = Quaternion(0.999997, 1.13879e-09, 4.76836e-07, -0.00238821)

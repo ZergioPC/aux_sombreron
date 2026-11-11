@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=3 uid="uid://g2xrfhi1uvbd"]
+
+[ext_resource type="PackedScene" uid="uid://gjjbe2ctggfl" path="res://Entities/Tramposo/Modelo3D/Tramposo_animation.glb" id="1_85au3"]
+
+[node name="Tramposo" instance=ExtResource("1_85au3")]
+
+[node name="Skeleton3D" parent="Tramposo" index="0"]
+bones/3/scale = Vector3(0.08, 0.08, 0.08)
+bones/4/scale = Vector3(0.08, 0.08, 0.08)
+bones/5/scale = Vector3(0.08, 0.08, 0.08)
+bones/6/scale = Vector3(0.08, 0.08, 0.08)
+bones/7/scale = Vector3(0.08, 0.08, 0.08)
+bones/8/scale = Vector3(0.08, 0.08, 0.08)
+bones/9/scale = Vector3(0.08, 0.08, 0.08)
+bones/10/scale = Vector3(0.08, 0.08, 0.08)
+bones/11/scale = Vector3(0.08, 0.08, 0.08)
+bones/12/scale = Vector3(0.08, 0.08, 0.08)
+bones/13/scale = Vector3(0.08, 0.08, 0.08)
+bones/14/scale = Vector3(0.08, 0.08, 0.08)
+bones/15/scale = Vector3(0.08, 0.08, 0.08)
+bones/16/scale = Vector3(0.08, 0.08, 0.08)
+bones/17/scale = Vector3(0.08, 0.08, 0.08)
+bones/18/scale = Vector3(0.08, 0.08, 0.08)
+bones/19/scale = Vector3(0.08, 0.08, 0.08)
+bones/20/scale = Vector3(0.08, 0.08, 0.08)
+bones/21/scale = Vector3(0.08, 0.08, 0.08)
+bones/22/scale = Vector3(0.08, 0.08, 0.08)
+bones/23/scale = Vector3(0.08, 0.08, 0.08)
+bones/24/scale = Vector3(0.08, 0.08, 0.08)
+bones/25/scale = Vector3(0.08, 0.08, 0.08)
+bones/26/scale = Vector3(1, 1, 1)
+bones/27/rotation = Quaternion(3.69791e-09, -2.74381e-07, -0.0136682, 0.999907)
+bones/27/scale = Vector3(1, 1, 1)
+bones/28/rotation = Quaternion(0.707024, -0.0108116, -0.707024, 0.0108116)
+bones/30/rotation = Quaternion(-0.5, 0.5, 0.5, -0.5)
+bones/32/scale = Vector3(1, 1, 1)
+bones/33/rotation = Quaternion(3.69791e-09, 2.74381e-07, 0.0136682, 0.999907)
+bones/33/scale = Vector3(1, 1, 1)
+bones/36/rotation = Quaternion(0.5, 0.5, 0.5, 0.5)
+
+[node name="bigote_L" parent="Tramposo/Skeleton3D" index="0"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.0788534, 1.37306, 0.152138)
+
+[node name="bigote_R" parent="Tramposo/Skeleton3D" index="1"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.0783769, 1.37306, 0.152138)
+
+[node name="hair_001" parent="Tramposo/Skeleton3D" index="2"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.250003, 1.74118, -0.0383376)
+
+[node name="hair_002" parent="Tramposo/Skeleton3D" index="3"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.00188945, 1.66614, -0.209725)
+
+[node name="hair_003" parent="Tramposo/Skeleton3D" index="4"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.186407, 1.76833, -0.123367)
+
+[node name="hair_004" parent="Tramposo/Skeleton3D" index="5"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.130834, 1.84461, -0.119914)
+
+[node name="hair_005" parent="Tramposo/Skeleton3D" index="6"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.100713, 1.8685, 0.0660812)
+
+[node name="hair_006" parent="Tramposo/Skeleton3D" index="7"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.0172258, 1.80298, 0.0869864)
+
+[node name="hair_007" parent="Tramposo/Skeleton3D" index="8"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.0889562, 1.87088, 0.0295933)
+
+[node name="hair_008" parent="Tramposo/Skeleton3D" index="9"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.19486, 1.71429, -0.0956342)
+
+[node name="hair_009" parent="Tramposo/Skeleton3D" index="10"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.07426, 1.81952, -0.22329)
+
+[node name="hair_010" parent="Tramposo/Skeleton3D" index="11"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.160823, 1.86874, -0.00774729)
+
+[node name="hair_011" parent="Tramposo/Skeleton3D" index="12"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.0160957, 1.8989, -0.0894391)
+
+[node name="hair_012" parent="Tramposo/Skeleton3D" index="13"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.0582473, 1.88799, 0.0778359)
+
+[node name="hair_013" parent="Tramposo/Skeleton3D" index="14"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.0967729, 1.89473, -0.162721)
+
+[node name="hair_014" parent="Tramposo/Skeleton3D" index="15"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.152441, 1.86258, -0.0271198)
+
+[node name="hair_015" parent="Tramposo/Skeleton3D" index="16"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.206559, 1.75626, -0.0492268)
+
+[node name="hair_016" parent="Tramposo/Skeleton3D" index="17"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.230517, 1.69298, 0.00640428)
+
+[node name="hair_017" parent="Tramposo/Skeleton3D" index="18"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.125947, 1.83884, 0.0733781)
+
+[node name="hair_018" parent="Tramposo/Skeleton3D" index="19"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.150378, 1.86549, 0.0359411)
+
+[node name="hear_L" parent="Tramposo/Skeleton3D" index="20"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, 0.23313, 1.54251, -0.0946884)
+
+[node name="hear_R" parent="Tramposo/Skeleton3D" index="21"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.232382, 1.54251, -0.0946884)
+
+[node name="hair" parent="Tramposo/Skeleton3D" index="22"]
+transform = Transform3D(0.08, 0, 0, 0, 2.86102e-08, -0.08, 0, 0.08, 2.86102e-08, -0.207623, 1.71182, 0.0301859)
