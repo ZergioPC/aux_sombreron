@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bf6osv13b68pb"
-path="res://.godot/imported/NpcGirl_animation.glb-4ff11343e641d5b5c16d739e664339cc.scn"
+path="res://.godot/imported/NpcGirl_animation.glb-b288d22d6f7f82d4b2623694e99f3cb4.scn"
 
 [deps]
 
-source_file="res://Entities/NpcGirl/NpcGirl_animation.glb"
-dest_files=["res://.godot/imported/NpcGirl_animation.glb-4ff11343e641d5b5c16d739e664339cc.scn"]
+source_file="res://Entities/NpcGirl/Modelo3D/NpcGirl_animation.glb"
+dest_files=["res://.godot/imported/NpcGirl_animation.glb-b288d22d6f7f82d4b2623694e99f3cb4.scn"]
 
 [params]
 

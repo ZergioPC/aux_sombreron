@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://46ygld5lr0rd"]
+
+[ext_resource type="Texture2D" uid="uid://n561ivik3my5" path="res://Entities/NpcBoy/texturas/AlbedoTransparency.jpg" id="1_vxv6s"]
+[ext_resource type="Texture2D" uid="uid://df8s54gicka0l" path="res://Entities/NpcBoy/texturas/Normal.jpg" id="2_dbpvu"]
+
+[resource]
+albedo_texture = ExtResource("1_vxv6s")
+normal_enabled = true
+normal_texture = ExtResource("2_dbpvu")

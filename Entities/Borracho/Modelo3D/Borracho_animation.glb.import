@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://tqwyvohtx85d"
-path="res://.godot/imported/NpcBoy_animation.glb-2e672833841f976c8e21e66cd80ee806.scn"
+uid="uid://bdo3ft8bsg41g"
+path="res://.godot/imported/Borracho_animation.glb-30344c0816e9466f1f30451e26816e35.scn"
 
 [deps]
 
-source_file="res://Entities/NpcBoy/NpcBoy_animation.glb"
-dest_files=["res://.godot/imported/NpcBoy_animation.glb-2e672833841f976c8e21e66cd80ee806.scn"]
+source_file="res://Entities/Borracho/Modelo3D/Borracho_animation.glb"
+dest_files=["res://.godot/imported/Borracho_animation.glb-30344c0816e9466f1f30451e26816e35.scn"]
 
 [params]
 
