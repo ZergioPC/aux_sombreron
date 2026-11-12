@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwhqh4h0r3axf"]
 
 [ext_resource type="PackedScene" uid="uid://0g8ayfw57kht" path="res://Player/Modelo3D/Sombreron_V2_animations.glb" id="1_p116s"]
-[ext_resource type="Material" uid="uid://bscu1lucne28e" path="res://Player/Material/mat_sombreron.tres" id="2_fgx6g"]
+[ext_resource type="Material" uid="uid://bscu1lucne28e" path="res://Player/Material/Mat_sombreron.tres" id="2_fgx6g"]
 
-[node name="Sombreron_V2_animations" instance=ExtResource("1_p116s")]
+[node name="Sombreron" instance=ExtResource("1_p116s")]
 
 [node name="Skeleton3D" parent="SombreronV2" index="0"]
 bones/0/rotation = Quaternion(0.000153848, -7.96443e-16, 1.25955e-08, 1)

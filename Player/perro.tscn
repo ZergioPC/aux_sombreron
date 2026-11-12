@@ -1,31 +1,59 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmnskqo14y2ye"]
+[gd_scene load_steps=3 format=3 uid="uid://bmnskqo14y2ye"]
 
 [ext_resource type="PackedScene" uid="uid://chbbd361wodb1" path="res://Player/Modelo3D/Perro_V2_animations.glb" id="1_qjjo3"]
+[ext_resource type="Material" uid="uid://nih35inspccg" path="res://Player/Material/Mat_perro.tres" id="2_6fqdu"]
 
 [node name="Perro" instance=ExtResource("1_qjjo3")]
 
 [node name="Skeleton3D" parent="Empty/PerroRIG" index="0"]
-bones/0/position = Vector3(-0.00233092, 0.36669, -0.269803)
-bones/0/rotation = Quaternion(0.709448, 2.22708e-07, 2.21235e-07, 0.704757)
+bones/0/position = Vector3(-0.00233092, 0.367391, -0.269378)
+bones/0/rotation = Quaternion(0.706897, 2.21906e-07, 2.22038e-07, 0.707317)
 bones/0/scale = Vector3(1, 1, 1)
-bones/1/rotation = Quaternion(0.00512567, -7.51141e-05, -0.000496369, 0.999987)
-bones/2/position = Vector3(5.42235e-09, 0.435864, 0.282059)
-bones/2/rotation = Quaternion(0.204029, -5.82258e-07, -1.27464e-07, 0.978965)
-bones/3/position = Vector3(5.42241e-09, 0.377385, -0.337577)
-bones/3/rotation = Quaternion(-0.628454, 6.31723e-16, 6.31726e-16, 0.777846)
-bones/4/position = Vector3(0.0901152, 0.364323, -0.24919)
-bones/4/rotation = Quaternion(0.999994, -2.22e-10, -1.19209e-07, 0.00342776)
+bones/1/rotation = Quaternion(0.00543313, 2.58174e-06, -0.000466737, 0.999985)
+bones/2/position = Vector3(0.000395335, 0.435836, 0.282019)
+bones/2/rotation = Quaternion(0.208728, -0.000400715, -8.59373e-05, 0.977974)
+bones/3/position = Vector3(5.42241e-09, 0.377234, -0.337079)
+bones/3/rotation = Quaternion(-0.628608, 6.31598e-16, 6.31851e-16, 0.777722)
+bones/4/position = Vector3(0.0901152, 0.364416, -0.24916)
+bones/4/rotation = Quaternion(0.999996, -2.95407e-10, -1.19209e-07, 0.00281198)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/position = Vector3(0.0928536, 0.74922, 0.339004)
-bones/5/rotation = Quaternion(-0.0203868, 0.00377247, -0.327101, 0.944762)
+bones/5/position = Vector3(0.0929126, 0.74824, 0.342647)
+bones/5/rotation = Quaternion(-0.0160749, 0.00526459, -0.327637, 0.944652)
 bones/5/scale = Vector3(1, 1, 1)
-bones/6/position = Vector3(-0.0901152, 0.364706, -0.249709)
-bones/6/rotation = Quaternion(0.999998, 4.04368e-10, 1.19209e-07, 0.00189795)
+bones/6/position = Vector3(-0.0901152, 0.364565, -0.249173)
+bones/6/rotation = Quaternion(0.999997, 3.34318e-10, 1.19209e-07, 0.00248558)
 bones/6/scale = Vector3(1, 1, 1)
-bones/7/position = Vector3(-0.0928511, 0.74922, 0.339004)
-bones/7/rotation = Quaternion(-0.0203867, -0.00377274, 0.327113, 0.944758)
+bones/7/position = Vector3(-0.092792, 0.750084, 0.341666)
+bones/7/rotation = Quaternion(-0.0163286, -0.00595186, 0.326505, 0.945036)
 bones/7/scale = Vector3(1, 1, 1)
-bones/8/position = Vector3(0.0769276, 0.243186, 0.241691)
-bones/8/rotation = Quaternion(0.999991, -2.03739e-09, -4.76833e-07, -0.00427272)
-bones/9/position = Vector3(-0.0769276, 0.241747, 0.241381)
-bones/9/rotation = Quaternion(0.999997, 1.13879e-09, 4.76836e-07, -0.00238821)
+bones/8/position = Vector3(0.0769276, 0.241899, 0.241708)
+bones/8/rotation = Quaternion(1, -1.05026e-10, -4.76837e-07, -0.000220256)
+bones/9/position = Vector3(-0.0769276, 0.241729, 0.241675)
+bones/9/rotation = Quaternion(1, 6.2252e-11, 4.76837e-07, -0.000130552)
+
+[node name="Cabeza_001" parent="Empty/PerroRIG/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Cola_001" parent="Empty/PerroRIG/Skeleton3D" index="1"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Cuerpo_001" parent="Empty/PerroRIG/Skeleton3D" index="2"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Oreja_D_001" parent="Empty/PerroRIG/Skeleton3D" index="3"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Oreja_I_001" parent="Empty/PerroRIG/Skeleton3D" index="4"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Pata_Delantera_D_001" parent="Empty/PerroRIG/Skeleton3D" index="5"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Pata_Delantera_I_001" parent="Empty/PerroRIG/Skeleton3D" index="6"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Pata_Trasera_D_001" parent="Empty/PerroRIG/Skeleton3D" index="7"]
+surface_material_override/0 = ExtResource("2_6fqdu")
+
+[node name="Pata_Trasera_I_001" parent="Empty/PerroRIG/Skeleton3D" index="8"]
+surface_material_override/0 = ExtResource("2_6fqdu")

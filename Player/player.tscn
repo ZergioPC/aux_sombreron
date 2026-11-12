@@ -1,3 +1,44 @@
-[gd_scene format=3 uid="uid://cqcjfafijyups"]
+[gd_scene load_steps=7 format=3 uid="uid://cqcjfafijyups"]
+
+[ext_resource type="PackedScene" uid="uid://cwhqh4h0r3axf" path="res://Player/sombreron.tscn" id="1_56uwu"]
+[ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_lfkgb"]
+[ext_resource type="Script" path="res://Player/Scripts/sombreron.gd" id="2_slwb0"]
+[ext_resource type="PackedScene" uid="uid://bmnskqo14y2ye" path="res://Player/perro.tscn" id="2_u4a5d"]
+[ext_resource type="Script" path="res://Player/Scripts/perro.gd" id="3_881ei"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kfini"]
+radius = 0.23659
+height = 0.827062
 
 [node name="Player" type="Node3D"]
+script = ExtResource("1_lfkgb")
+
+[node name="Sombreron" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model")]
+script = ExtResource("2_slwb0")
+walk_speed = 1.5
+run_speed = 4.0
+animation_player = NodePath("Sombreron/AnimationPlayer")
+model = NodePath("Sombreron/SombreronV2")
+
+[node name="Sombreron" parent="Sombreron" instance=ExtResource("1_56uwu")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sombreron"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.895863, 0)
+shape = SubResource("CapsuleShape3D_kfini")
+
+[node name="Perro" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model")]
+visible = false
+script = ExtResource("3_881ei")
+sniff_duration = 4.0
+animation_player = NodePath("Perro/AnimationPlayer")
+model = NodePath("Perro/Empty/PerroRIG")
+
+[node name="Perro" parent="Perro" instance=ExtResource("2_u4a5d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.348579, 0)
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Perro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.387553, 0.00415075)
+shape = SubResource("CapsuleShape3D_kfini")
+
+[editable path="Sombreron/Sombreron"]
+[editable path="Perro/Perro"]

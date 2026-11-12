@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bu4bg2kob3kjd"]
+
+[ext_resource type="PackedScene" uid="uid://cqcjfafijyups" path="res://Player/player.tscn" id="1_idffq"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w5pvq"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Player" parent="." instance=ExtResource("1_idffq")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.462669, 5.16321)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.358399, -1, -0.582046)
+shape = SubResource("WorldBoundaryShape3D_w5pvq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.570363, -0.390269, 0.722755, -0.0455504, 0.863533, 0.502232, -0.820129, -0.319376, 0.47475, 2, 2, 2)
