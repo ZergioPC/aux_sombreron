@@ -1,40 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwhqh4h0r3axf"]
+[gd_scene load_steps=6 format=3 uid="uid://cwhqh4h0r3axf"]
 
 [ext_resource type="PackedScene" uid="uid://0g8ayfw57kht" path="res://Player/Modelo3D/Sombreron_V2_animations.glb" id="1_p116s"]
 [ext_resource type="Material" uid="uid://bscu1lucne28e" path="res://Player/Material/Mat_sombreron.tres" id="2_fgx6g"]
 
+[sub_resource type="Gradient" id="Gradient_defd8"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4x6p8"]
+gradient = SubResource("Gradient_defd8")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_v0w8m"]
+radius = 1.10571
+
 [node name="Sombreron" instance=ExtResource("1_p116s")]
 
 [node name="Skeleton3D" parent="SombreronV2" index="0"]
-bones/0/rotation = Quaternion(0.000153848, -7.96443e-16, 1.25955e-08, 1)
+bones/0/position = Vector3(-0.00877401, 0.27875, -0.00226229)
 bones/1/rotation = Quaternion(0, 0, 0, 1)
 bones/2/rotation = Quaternion(0, 0, 0, 1)
-bones/3/position = Vector3(0, 1.47955, 0)
+bones/3/position = Vector3(-0.00877401, 1.45491, -0.00226229)
 bones/3/rotation = Quaternion(0, 0, 0, 1)
 bones/3/scale = Vector3(1, 1, 1)
-bones/4/rotation = Quaternion(0, 0, 0, 1)
-bones/5/rotation = Quaternion(0.707107, 0, -0.707107, 0)
-bones/6/position = Vector3(0.155901, 0.778767, -0.00493429)
-bones/6/rotation = Quaternion(0.00374511, -0.0105519, 0.941435, -0.337009)
+bones/4/rotation = Quaternion(-1.07404e-08, -4.49938e-09, 2.08036e-09, 1)
+bones/5/position = Vector3(0.11299, 0.307118, -0.0468937)
+bones/5/rotation = Quaternion(0.706541, 0.0282686, -0.706542, -0.0282686)
+bones/6/position = Vector3(0.147127, 0.754129, -0.00719658)
+bones/6/rotation = Quaternion(0.000570378, -0.00373079, 0.941168, -0.337919)
 bones/6/scale = Vector3(1, 1, 1)
 bones/7/rotation = Quaternion(0.00276426, 0.000147589, -0.0103143, 0.999943)
-bones/8/position = Vector3(0.574319, 1.21782, 0)
+bones/8/position = Vector3(0.565545, 1.19319, -0.00226229)
 bones/8/rotation = Quaternion(-0.5, -0.5, -0.5, 0.5)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/position = Vector3(-0.574319, 1.21782, 0)
+bones/9/position = Vector3(-0.583093, 1.19319, -0.00226229)
 bones/9/rotation = Quaternion(-0.5, 0.5, 0.5, 0.5)
 bones/9/scale = Vector3(1, 1, 1)
-bones/10/position = Vector3(0, 1.21782, -0.5)
-bones/10/rotation = Quaternion(-0.707107, 2.22045e-16, -1.40079e-16, 0.707107)
+bones/10/position = Vector3(-0.00877401, 1.19319, -0.502262)
+bones/10/rotation = Quaternion(-0.707107, 1.17961e-16, -2.54571e-16, 0.707107)
 bones/10/scale = Vector3(1, 1, 1)
-bones/11/position = Vector3(0, 1.21782, 0.5)
-bones/11/rotation = Quaternion(-8.88178e-16, 0.707107, 0.707107, -2.08167e-16)
+bones/11/position = Vector3(-0.00877401, 1.19319, 0.497738)
+bones/11/rotation = Quaternion(4.44089e-16, 0.707107, 0.707107, 1.38778e-17)
 bones/11/scale = Vector3(1, 1, 1)
+bones/12/position = Vector3(-0.130538, 0.294699, -0.00220764)
 bones/12/rotation = Quaternion(0.707107, 0, 0.707107, 0)
-bones/13/position = Vector3(-0.155901, 0.778767, -0.00493429)
-bones/13/rotation = Quaternion(-0.00374511, -0.0105519, 0.941435, 0.337009)
+bones/13/position = Vector3(-0.164675, 0.754129, -0.00719658)
+bones/13/rotation = Quaternion(-0.00140288, -0.00589912, 0.941184, 0.337842)
 bones/13/scale = Vector3(1, 1, 1)
-bones/14/rotation = Quaternion(0.00276426, -0.000147589, 0.0103143, 0.999943)
+bones/14/rotation = Quaternion(0.00276425, -0.000147588, 0.0103143, 0.999943)
 
 [node name="Barba" parent="SombreronV2/Skeleton3D" index="0"]
 surface_material_override/0 = ExtResource("2_fgx6g")
@@ -74,3 +84,17 @@ surface_material_override/0 = ExtResource("2_fgx6g")
 
 [node name="Torso" parent="SombreronV2/Skeleton3D" index="12"]
 surface_material_override/0 = ExtResource("2_fgx6g")
+
+[node name="Pivote" type="Marker3D" parent="." index="2"]
+
+[node name="Sprite3D" type="Sprite3D" parent="Pivote" index="0"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 2)
+pixel_size = 0.0275
+texture = SubResource("GradientTexture2D_4x6p8")
+
+[node name="AttackArea3D" type="Area3D" parent="Pivote" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.05346)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pivote/AttackArea3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.821158, 0)
+shape = SubResource("CylinderShape3D_v0w8m")

@@ -22,6 +22,7 @@ extends CharacterBody3D
 @export_group("References")
 @export var animation_player: AnimationPlayer
 @export var model: Node3D
+@export var pivote: Marker3D
 
 # -------------------------
 # STATES
@@ -94,7 +95,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Normal movement
-	handle_movement()
+	handle_movement(delta)
 	move_and_slide()
 
 
@@ -102,7 +103,7 @@ func _physics_process(delta: float) -> void:
 # MOVEMENT
 # -------------------------
 
-func handle_movement() -> void:
+func handle_movement(delta) -> void:
 
 	var input_direction := Input.get_vector(
 		"move_left",
@@ -151,11 +152,29 @@ func handle_movement() -> void:
 
 	# Rotate model towards movement direction
 	if model:
-		model.look_at(
-			global_position - movement_direction,
-			Vector3.UP
+		var target_direction = movement_direction
+		var target_angle = atan2(
+			target_direction.x,
+			target_direction.z
+		)
+		model.rotation.y = lerp_angle(
+			model.rotation.y,
+			target_angle,
+			8.0 * delta
 		)
 
+	# Rotate pivote
+	if pivote:
+		var target_direction = movement_direction
+		var target_angle = atan2(
+			target_direction.x,
+			target_direction.z
+		)
+		pivote.rotation.y = lerp_angle(
+			pivote.rotation.y,
+			target_angle,
+			8.0 * delta
+		)
 
 # -------------------------
 # DASH

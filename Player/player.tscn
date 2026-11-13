@@ -13,12 +13,13 @@ height = 0.827062
 [node name="Player" type="Node3D"]
 script = ExtResource("1_lfkgb")
 
-[node name="Sombreron" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model")]
+[node name="Sombreron" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model", "pivote")]
 script = ExtResource("2_slwb0")
 walk_speed = 1.5
 run_speed = 4.0
 animation_player = NodePath("Sombreron/AnimationPlayer")
 model = NodePath("Sombreron/SombreronV2")
+pivote = NodePath("Sombreron/Pivote")
 
 [node name="Sombreron" parent="Sombreron" instance=ExtResource("1_56uwu")]
 
@@ -29,6 +30,7 @@ shape = SubResource("CapsuleShape3D_kfini")
 [node name="Perro" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model")]
 visible = false
 script = ExtResource("3_881ei")
+walk_speed = 1.5
 sniff_duration = 4.0
 animation_player = NodePath("Perro/AnimationPlayer")
 model = NodePath("Perro/Empty/PerroRIG")

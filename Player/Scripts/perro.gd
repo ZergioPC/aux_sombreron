@@ -39,7 +39,7 @@ var movement_direction: Vector3 = Vector3.ZERO
 # -------------------------
 
 func _ready() -> void:
-	play_animation("idle")
+	play_animation("idle", 1.0)
 
 
 # -------------------------
@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 		return
 
 	# Normal movement
-	handle_movement()
+	handle_movement(delta)
 
 	move_and_slide()
 
@@ -84,7 +84,7 @@ func _physics_process(delta: float) -> void:
 # MOVEMENT
 # -------------------------
 
-func handle_movement() -> void:
+func handle_movement(delta) -> void:
 
 	var input_direction := Input.get_vector(
 		"move_left",
@@ -121,9 +121,15 @@ func handle_movement() -> void:
 
 	# Rotate model towards movement direction
 	if model:
-		model.look_at(
-			global_position - movement_direction,
-			Vector3.UP
+		var target_direction = movement_direction
+		var target_angle = atan2(
+			target_direction.x,
+			target_direction.z
+		)
+		model.rotation.y = lerp_angle(
+			model.rotation.y,
+			target_angle,
+			8.0 * delta
 		)
 
 
@@ -155,13 +161,13 @@ func change_state(new_state: State) -> void:
 	match current_state:
 
 		State.IDLE:
-			play_animation("idle")
+			play_animation("idle", 1.0)
 
 		State.WALK:
-			play_animation("walk")
+			play_animation("walk", 1.8)
 
 		State.SNIFF:
-			play_animation("smell")
+			play_animation("smell", 1.0)
 
 func set_controlled(value: bool) -> void:
 	is_controlled = value
@@ -171,7 +177,8 @@ func set_controlled(value: bool) -> void:
 		velocity.z = 0.0
 
 
-func play_animation(animation_name: String) -> void:
+func play_animation(animation_name: String, speed: float) -> void:
 
 	if animation_player:
+		animation_player.speed_scale = speed
 		animation_player.play(animation_name)
