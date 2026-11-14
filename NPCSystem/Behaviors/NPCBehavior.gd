@@ -9,6 +9,7 @@ extends Node
 
 const EVENT_THREAT_DETECTED := &"threat_detected"
 const EVENT_THREAT_LOST := &"threat_lost"
+const EVENT_PLAYER_DISCOVERED := &"player_discovered"
 
 ## Referencia al NPC que utiliza este comportamiento.
 var npc

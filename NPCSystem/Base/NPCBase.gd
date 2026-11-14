@@ -45,6 +45,11 @@ var behavior: NPCBehavior
 var state_machine: NPCStateMachine
 var perception: NPCPerception
 
+## Indica si este NPC es el objetivo de caza actual.
+var is_hunt_target: bool = false
+## Indica si este NPC ya fue capturado.
+var is_captured: bool = false
+
 var _animation_player: AnimationPlayer
 var _is_moving: bool = false
 var _has_destination: bool = false
@@ -63,12 +68,19 @@ func _ready() -> void:
 	_resolve_references()
 	_configure_perception()
 
+	GameState.player_discovered.connect(_on_player_discovered)
+
 	if behavior != null:
 		behavior.setup(self)
 
 	if state_machine != null:
 		state_machine.setup(self)
 		state_machine.start()
+
+	# Si el jugador ya había sido descubierto antes de que este NPC apareciera,
+	# hay que notificarlo para que reaccione igual que el resto.
+	if GameState.is_discovered:
+		_on_player_discovered()
 
 
 func _physics_process(delta: float) -> void:
@@ -262,6 +274,29 @@ func get_safe_zone_position() -> Vector3:
 
 
 # -----------------------------------------------------------------------------
+# HUNT TARGET
+# -----------------------------------------------------------------------------
+
+## Marca o desmarca a este NPC como objetivo de caza.
+func set_hunt_target(value: bool) -> void:
+	is_hunt_target = value
+
+
+# -----------------------------------------------------------------------------
+# DESPAWN
+# -----------------------------------------------------------------------------
+
+## Hace desaparecer al NPC de forma inmediata.
+func despawn() -> void:
+	stop_movement()
+	visible = false
+	set_physics_process(false)
+	collision_layer = 0
+	collision_mask = 0
+	queue_free()
+
+
+# -----------------------------------------------------------------------------
 # EVENTS AND STATE MACHINE
 # -----------------------------------------------------------------------------
 
@@ -294,6 +329,14 @@ func _on_perception_body_lost(body: Node3D) -> void:
 	notify_event({
 		"name": NPCBehavior.EVENT_THREAT_LOST,
 		"source": body,
+	})
+
+
+## Reenvía al comportamiento el descubrimiento global del jugador.
+## El comportamiento decide si huye o no (por ejemplo, el objetivo de caza).
+func _on_player_discovered() -> void:
+	notify_event({
+		"name": NPCBehavior.EVENT_PLAYER_DISCOVERED,
 	})
 
 
