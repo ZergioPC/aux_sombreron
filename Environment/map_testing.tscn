@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cw5kq0ypvmg5d"]
+[gd_scene load_steps=5 format=3 uid="uid://cw5kq0ypvmg5d"]
 
+[ext_resource type="PackedScene" uid="uid://ui8f0iwkli4l" path="res://Entities/Tramposo/Tramposo.tscn" id="1_2ev4n"]
 [ext_resource type="PackedScene" uid="uid://cknalse3hxgqa" path="res://Entities/Peleador/Peleador.tscn" id="1_p4juy"]
 [ext_resource type="PackedScene" uid="uid://cqcjfafijyups" path="res://Player/player.tscn" id="2_player"]
 
@@ -51,6 +52,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1379, -9.53674e-07, 7.183
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8081, -9.53674e-07, -7.93149)
 
 [node name="Npcs" type="Node3D" parent="."]
+
+[node name="Tramposo" parent="Npcs" node_paths=PackedStringArray("safe_zone") instance=ExtResource("1_2ev4n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.65422, 0, 0)
+safe_zone = NodePath("../../SafeZones/2")
 
 [node name="Peleador" parent="Npcs" node_paths=PackedStringArray("safe_zone") instance=ExtResource("1_p4juy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.462, 0, -14.123)

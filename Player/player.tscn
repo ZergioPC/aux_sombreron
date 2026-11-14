@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://cqcjfafijyups"]
+[gd_scene load_steps=8 format=3 uid="uid://cqcjfafijyups"]
 
 [ext_resource type="PackedScene" uid="uid://cwhqh4h0r3axf" path="res://Player/sombreron.tscn" id="1_56uwu"]
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_lfkgb"]
 [ext_resource type="Script" path="res://Player/Scripts/sombreron.gd" id="2_slwb0"]
 [ext_resource type="PackedScene" uid="uid://bmnskqo14y2ye" path="res://Player/perro.tscn" id="2_u4a5d"]
 [ext_resource type="Script" path="res://Player/Scripts/perro.gd" id="3_881ei"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rkpxw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kfini"]
 radius = 0.23659
@@ -25,7 +27,7 @@ pivote = NodePath("Sombreron/Pivote")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sombreron"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.895863, 0)
-shape = SubResource("CapsuleShape3D_kfini")
+shape = SubResource("CapsuleShape3D_rkpxw")
 
 [node name="Perro" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model")]
 visible = false
