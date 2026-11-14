@@ -10,7 +10,7 @@
 radius = 0.23659
 height = 0.827062
 
-[node name="Player" type="Node3D"]
+[node name="Player" type="Node3D" groups=["player"]]
 script = ExtResource("1_lfkgb")
 
 [node name="Sombreron" type="CharacterBody3D" parent="." node_paths=PackedStringArray("animation_player", "model", "pivote")]

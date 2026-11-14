@@ -1,13 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://cknalse3hxgqa"]
+[gd_scene load_steps=5 format=3 uid="uid://cknalse3hxgqa"]
 
-[ext_resource type="PackedScene" uid="uid://bksaypiu6el3u" path="res://Entities/Peleador/Modelo3D/Peleador_Model.tscn" id="1_0wu28"]
+[ext_resource type="PackedScene" path="res://NPCSystem/Base/NPCBase.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://bksaypiu6el3u" path="res://Entities/Peleador/Modelo3D/Peleador_Model.tscn" id="2_model"]
+[ext_resource type="Script" path="res://NPCSystem/Behaviors/FighterBehavior.gd" id="3_fighter"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mmae2"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_peleador"]
+radius = 0.4
+height = 1.8
 
-[node name="Peleador" type="CharacterBody3D"]
+[node name="Peleador" instance=ExtResource("1_base")]
+classification = 1
+move_speed = 2.5
 
-[node name="Peleador_animation" parent="." instance=ExtResource("1_0wu28")]
+[node name="Peleador_animation" parent="Model" index="0" instance=ExtResource("2_model")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_mmae2")
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_peleador")
+
+[node name="Behavior" parent="." index="6"]
+script = ExtResource("3_fighter")
