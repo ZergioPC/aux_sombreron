@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw5kq0ypvmg5d"]
+
+[ext_resource type="PackedScene" uid="uid://cknalse3hxgqa" path="res://Entities/Peleador/Peleador.tscn" id="1_p4juy"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_af00w"]
+vertices = PackedVector3Array(-5.67381, 0.392067, -13.158, -2.92381, 0.392067, -13.408, -2.92381, 0.392067, -16.408, -15.4238, 0.392067, -16.408, -15.4238, 0.392067, -7.65801, -5.67381, 0.392067, -7.90801, -0.173813, 0.392067, -13.158, 11.5762, 0.392067, -16.408, -0.173813, 0.392067, -7.90801, 11.5762, 0.392067, -7.65801, -5.17381, 3.39207, -12.908, -5.17381, 3.39207, -6.65801, -0.673813, 3.39207, -6.65801, -0.673813, 3.39207, -12.908, -4.92381, 0.392067, -12.658, -4.92381, 0.392067, -6.90801, -0.923813, 0.392067, -6.90801, -0.923813, 0.392067, -12.658, 3.07619, 0.392067, 4.34199, 0.576187, 0.392067, 0.341991, -0.423813, 0.392067, 0.591991, -1.17381, 0.392067, 0.0919914, 3.32619, 0.392067, 7.34199, -0.423813, 0.392067, -0.658009, -0.673813, 0.392067, -6.15801, -5.42381, 0.392067, -6.15801, -15.4238, 0.392067, 10.092, 11.5762, 0.392067, 10.092, 11.5762, 0.392067, 7.09199, 5.57619, 0.392067, 3.84199, 5.82619, 0.392067, 4.84199, 8.82619, 0.392067, 4.84199, 9.07619, 0.392067, 3.84199, 1.07619, 0.392067, -0.158009, 3.32619, 0.392067, 3.84199, 0.326187, 0.392067, -0.908009, -0.173813, 0.392067, -6.40801, 11.5762, 0.392067, 4.09199, -0.173813, 2.14207, -0.408009, -0.173813, 2.39207, 0.0919914, 0.326187, 2.39207, 0.0919914, 0.326187, 2.39207, -0.408009, 11.0762, 3.39207, 4.34199, 9.32619, 3.39207, 4.34199, 9.07619, 3.39207, 5.34199, 11.0762, 3.39207, 6.84199, 5.57619, 3.39207, 5.34199, 5.32619, 3.39207, 4.34199, 3.57619, 3.39207, 4.34199, 3.57619, 3.39207, 6.84199, 4.57619, 0.392067, 5.09199, 5.07619, 0.392067, 4.84199, 3.82619, 0.392067, 4.59199, 3.82619, 0.392067, 6.59199, 4.57619, 0.392067, 6.59199, 10.8262, 0.392067, 4.59199, 9.57619, 0.392067, 4.59199, 10.3262, 0.392067, 5.09199, 10.3262, 0.392067, 6.59199, 10.8262, 0.392067, 6.59199, 5.82619, 0.392067, 5.59199, 5.82619, 0.392067, 6.59199, 8.82619, 0.392067, 6.59199, 8.82619, 0.392067, 5.59199)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 0), PackedInt32Array(0, 4, 3), PackedInt32Array(1, 2, 6), PackedInt32Array(6, 2, 7), PackedInt32Array(8, 6, 9), PackedInt32Array(9, 6, 7), PackedInt32Array(13, 12, 10), PackedInt32Array(10, 12, 11), PackedInt32Array(17, 16, 14), PackedInt32Array(14, 16, 15), PackedInt32Array(18, 20, 19), PackedInt32Array(20, 18, 21), PackedInt32Array(21, 18, 22), PackedInt32Array(23, 21, 24), PackedInt32Array(24, 21, 25), PackedInt32Array(21, 22, 25), PackedInt32Array(25, 22, 4), PackedInt32Array(4, 22, 26), PackedInt32Array(4, 5, 25), PackedInt32Array(28, 27, 22), PackedInt32Array(22, 27, 26), PackedInt32Array(31, 30, 29), PackedInt32Array(31, 29, 32), PackedInt32Array(32, 29, 33), PackedInt32Array(34, 18, 19), PackedInt32Array(19, 33, 34), PackedInt32Array(34, 33, 29), PackedInt32Array(36, 35, 24), PackedInt32Array(24, 35, 23), PackedInt32Array(35, 36, 33), PackedInt32Array(33, 36, 8), PackedInt32Array(33, 8, 32), PackedInt32Array(32, 8, 37), PackedInt32Array(37, 8, 9), PackedInt32Array(41, 40, 38), PackedInt32Array(38, 40, 39), PackedInt32Array(43, 42, 44), PackedInt32Array(44, 42, 45), PackedInt32Array(47, 46, 48), PackedInt32Array(48, 46, 49), PackedInt32Array(46, 44, 49), PackedInt32Array(49, 44, 45), PackedInt32Array(52, 51, 50), PackedInt32Array(54, 53, 50), PackedInt32Array(50, 53, 52), PackedInt32Array(57, 56, 55), PackedInt32Array(58, 57, 59), PackedInt32Array(59, 57, 55), PackedInt32Array(63, 62, 60), PackedInt32Array(60, 62, 61)]
+agent_radius = 0.2
+vertices_per_polygon = 8.0
+
+[node name="MapTesting" type="Node3D"]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_af00w")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(4.29163, 0, 0, 0, 4.29163, 0, 0, 0, 4.29163, -1.95808, -0.621379, -3.09815)
+size = Vector3(6.39185, 0.255859, 6.31921)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(4.29163, 0, 0, 0, 4.29163, 0, 0, 0, 4.29163, -2.87764, -0.466599, -9.79484)
+size = Vector3(1.09473, 1.58044, 1.539)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(4.29163, 0, 0, 0, 4.29163, 0, 0, 0, 4.29163, 4.43839, -0.466599, 5.62753)
+size = Vector3(0.495789, 1.58044, 0.674896)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(4.29163, 0, 0, 0, 4.29163, 0, 0, 0, 4.29163, 7.45631, -0.466599, 6.19508)
+size = Vector3(1.20324, 1.58044, 0.410412)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="NavigationRegion3D"]
+transform = Transform3D(4.29163, 0, 0, 0, 4.29163, 0, 0, 0, 4.29163, 10.231, -0.466599, 5.62753)
+size = Vector3(0.495789, 1.58044, 0.674896)
+
+[node name="SafeZones" type="Node3D" parent="."]
+
+[node name="1" type="Marker3D" parent="SafeZones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.09136, -9.53674e-07, 4.79703)
+
+[node name="2" type="Marker3D" parent="SafeZones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.1379, -9.53674e-07, 7.18363)
+
+[node name="3" type="Marker3D" parent="SafeZones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8081, -9.53674e-07, -7.93149)
+
+[node name="Npcs" type="Node3D" parent="."]
+
+[node name="Peleador" parent="Npcs" instance=ExtResource("1_p4juy")]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.814116, 0.333078, -0.475684, 0, 0.819152, 0.573576, 0.580703, -0.466957, 0.666884, -11.905, 7.125, 10.265)
