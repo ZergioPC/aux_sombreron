@@ -10,7 +10,6 @@ height = 1.8
 
 [node name="Tramposo" instance=ExtResource("1_base")]
 classification = 1
-move_speed = 2.5
 
 [node name="Tramposo_animation" parent="Model" index="0" instance=ExtResource("2_model")]
 

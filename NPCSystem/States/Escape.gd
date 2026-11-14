@@ -22,7 +22,7 @@ func enter() -> void:
 		npc.play_animation(npc.idle_animation)
 		return
 
-	npc.move_to_position(npc.get_safe_zone_position())
+	npc.move_to_position(npc.get_safe_zone_position(), npc.run_speed)
 	npc.play_animation(npc.escape_animation)
 
 

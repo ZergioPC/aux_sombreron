@@ -19,7 +19,10 @@ enum Classification {
 @export var safe_zone: Node3D
 
 @export_group("Movement")
-@export var move_speed: float = 2.0
+## Velocidad usada al caminar (por ejemplo, durante el estado Idle).
+@export var walk_speed: float = 0.6
+## Velocidad usada al correr (por ejemplo, durante el estado Escape).
+@export var run_speed: float = 2.0
 @export var acceleration: float = 10.0
 @export var rotation_speed: float = 8.0
 @export var gravity: float = 20.0
@@ -30,6 +33,7 @@ enum Classification {
 
 @export_group("Animations")
 @export var idle_animation: StringName = &"idle"
+@export var walk_animation: StringName = &"walk"
 @export var escape_animation: StringName = &"run"
 
 @export_group("References")
@@ -46,6 +50,7 @@ var _is_moving: bool = false
 var _has_destination: bool = false
 var _destination: Vector3 = Vector3.ZERO
 var _movement_elapsed: float = 0.0
+var _movement_speed: float = 0.0
 var _missing_animations: Dictionary = {}
 
 ## Tiempo mínimo antes de confiar en NavigationAgent3D.is_navigation_finished().
@@ -85,12 +90,14 @@ func _physics_process(delta: float) -> void:
 # -----------------------------------------------------------------------------
 
 ## Inicia el desplazamiento hacia una posición usando el NavigationAgent3D.
-func move_to_position(target_position: Vector3) -> void:
+## Si [param speed] es menor o igual a cero se usa walk_speed.
+func move_to_position(target_position: Vector3, speed: float = -1.0) -> void:
 	if navigation_agent == null:
 		push_warning("NPC '%s' no tiene un NavigationAgent3D asignado." % name)
 		stop_movement()
 		return
 
+	_movement_speed = walk_speed if speed <= 0.0 else speed
 	_destination = target_position
 	_has_destination = true
 	_is_moving = true
@@ -127,6 +134,70 @@ func has_reached_destination() -> bool:
 	return false
 
 
+## Busca un punto aleatorio sobre el mapa de navegación del NPC.
+##
+## El punto debe estar a una distancia horizontal entre [param min_distance] y
+## [param max_distance], y debe ser alcanzable desde la posición actual. Devuelve
+## un Dictionary con las claves "found" (bool) y "position" (Vector3). Si no se
+## encuentra un punto válido, "found" es false.
+func get_random_navigation_position(
+	min_distance: float = 1.0,
+	max_distance: float = 20.0,
+	max_attempts: int = 10
+) -> Dictionary:
+	var result := {"found": false, "position": Vector3.ZERO}
+
+	if navigation_agent == null:
+		return result
+
+	var map_rid := navigation_agent.get_navigation_map()
+	if not map_rid.is_valid():
+		return result
+
+	var navigation_layers := navigation_agent.navigation_layers
+	var attempt_count := maxi(max_attempts, 1)
+
+	for _attempt in attempt_count:
+		var candidate := NavigationServer3D.map_get_random_point(
+			map_rid, navigation_layers, true
+		)
+
+		var offset := candidate - global_position
+		offset.y = 0.0
+		var distance := offset.length()
+
+		if distance < min_distance or distance > max_distance:
+			continue
+
+		if not _is_navigation_position_reachable(
+			map_rid, candidate, navigation_layers
+		):
+			continue
+
+		result["found"] = true
+		result["position"] = candidate
+		return result
+
+	return result
+
+
+## Comprueba que exista una ruta de navegación hasta [param target].
+func _is_navigation_position_reachable(
+	map_rid: RID,
+	target: Vector3,
+	navigation_layers: int
+) -> bool:
+	var path := NavigationServer3D.map_get_path(
+		map_rid, global_position, target, true, navigation_layers
+	)
+
+	if path.is_empty():
+		return false
+
+	var path_end := path[path.size() - 1]
+	return path_end.distance_to(target) <= maxf(arrival_distance, 1.0)
+
+
 func _apply_gravity(delta: float) -> void:
 	if is_on_floor():
 		velocity.y = 0.0
@@ -157,8 +228,8 @@ func _follow_navigation_path(delta: float) -> void:
 
 	direction = direction.normalized()
 
-	velocity.x = move_toward(velocity.x, direction.x * move_speed, acceleration * delta)
-	velocity.z = move_toward(velocity.z, direction.z * move_speed, acceleration * delta)
+	velocity.x = move_toward(velocity.x, direction.x * _movement_speed, acceleration * delta)
+	velocity.z = move_toward(velocity.z, direction.z * _movement_speed, acceleration * delta)
 
 	_rotate_model_towards(direction, delta)
 
