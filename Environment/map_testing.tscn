@@ -57,7 +57,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8081, -9.53674e-07, -7.93
 
 [node name="Tramposo" parent="Npcs" node_paths=PackedStringArray("safe_zone") instance=ExtResource("1_2ev4n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.65422, 0, 0)
-safe_zone = NodePath("../../SafeZones/2")
+safe_zone = NodePath("../../SafeZones/3")
 
 [node name="Peleador" parent="Npcs" node_paths=PackedStringArray("safe_zone") instance=ExtResource("1_p4juy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.462, 0, -14.123)

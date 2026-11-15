@@ -45,6 +45,7 @@ func select_random_target() -> void:
 
 	var index := randi() % candidates.size()
 	_set_current_target(candidates[index])
+	print(candidates[index].name)
 
 
 ## Completa la captura del objetivo actual: le quita la marca, lo hace
