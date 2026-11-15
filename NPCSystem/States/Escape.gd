@@ -2,8 +2,8 @@ extends NPCState
 
 ## Estado de escape del NPC.
 ##
-## Solicita a NPCBase el desplazamiento hacia la zona segura asignada y vuelve
-## a Idle cuando la amenaza desaparece o al llegar sin amenazas pendientes.
+## Solicita a NPCBase el desplazamiento hacia la zona segura asignada. Al
+## llegar, el NPC desaparece de forma instantánea mediante NPCBase.despawn().
 
 var _arrived: bool = false
 
@@ -30,22 +30,19 @@ func update(_delta: float) -> void:
 	if npc == null:
 		return
 
+	# Salvaguarda: sin zona segura no tiene sentido escapar.
 	if not npc.has_safe_zone():
 		request_transition(&"idle")
 		return
 
+	# Ya se ordenó la desaparición; se espera a que queue_free la aplique.
 	if _arrived:
-		if not npc.has_perceived_threats():
-			request_transition(&"idle")
 		return
 
 	if npc.has_reached_destination():
 		_arrived = true
 		npc.stop_movement()
-		npc.play_animation(npc.idle_animation)
-
-		if not npc.has_perceived_threats():
-			request_transition(&"idle")
+		npc.despawn()
 
 
 func exit() -> void:

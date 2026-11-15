@@ -23,6 +23,8 @@ extends CharacterBody3D
 @export var animation_player: AnimationPlayer
 @export var model: Node3D
 @export var pivote: Marker3D
+## Zona de detección del ataque. Si queda vacía, se resuelve desde [member pivote].
+@export var attack_area: Area3D
 
 # -------------------------
 # STATES
@@ -52,7 +54,15 @@ var is_controlled: bool = false
 # -------------------------
 
 func _ready() -> void:
+	_resolve_attack_area()
 	play_animation("idle", 1.0)
+
+
+## Resuelve la referencia al AttackArea3D a partir del pivote si no está asignada.
+func _resolve_attack_area() -> void:
+	if attack_area != null or pivote == null:
+		return
+	attack_area = pivote.get_node_or_null("AttackArea3D") as Area3D
 
 
 # -------------------------
@@ -210,11 +220,38 @@ func update_dash(delta: float) -> void:
 
 func start_attack() -> void:
 
+	# El ataque solo tiene efecto si hay un objetivo de caza dentro del área.
+	if _find_hunt_target_in_attack_area() == null:
+		_prepare_attack_miss_effect()
+		return
+
 	action_timer = attack_duration
 	velocity.x = 0
 	velocity.z = 0
 
 	change_state(State.ATTACK)
+
+	# Reproducida la animación de ataque, arranca la cinemática de captura.
+	# El placeholder de la cinemática se encarga de la pausa y la captura.
+	GameState.begin_cinematic()
+
+
+## Busca un NPC que sea el objetivo de caza dentro del AttackArea3D.
+func _find_hunt_target_in_attack_area() -> NPCBase:
+	if attack_area == null:
+		return null
+
+	for body in attack_area.get_overlapping_bodies():
+		if body is NPCBase and body.is_hunt_target:
+			return body
+
+	return null
+
+
+## Punto de extensión para la futura animación del rectángulo (Sprite3D) bajo el
+## área de ataque. Todavía no implementa ningún efecto visual.
+func _prepare_attack_miss_effect() -> void:
+	pass
 
 
 # -------------------------
