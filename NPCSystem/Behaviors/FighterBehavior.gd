@@ -13,18 +13,17 @@ func handle_event(event: Dictionary) -> void:
 
 	match event_name:
 		EVENT_THREAT_DETECTED:
-			_on_threat_detected()
+			flee_from_threat()
+		EVENT_PLAYER_DISCOVERED:
+			_on_player_discovered()
 
 	# EVENT_THREAT_LOST no interrumpe Escape: el estado Escape comprueba las
 	# amenazas al llegar a la zona segura y vuelve a Idle cuando desaparecen.
 
 
-func _on_threat_detected() -> void:
-	if npc == null:
-		return
-
-	# Sin zona segura no se solicita Escape; el NPC permanece en Idle.
-	if not npc.has_safe_zone():
-		return
-
-	request_state(&"escape")
+## Reacción al descubrimiento global del jugador.
+##
+## Por ahora el peleador huye igual que el resto. Punto de extensión previsto
+## para que en el futuro reaccione de forma distinta (por ejemplo, perseguir).
+func _on_player_discovered() -> void:
+	flee_from_threat()

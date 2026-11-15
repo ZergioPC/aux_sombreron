@@ -15,6 +15,11 @@ run/main_scene="res://Environment/map_testing.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameState="*res://Game/GameState.gd"
+HuntManager="*res://Game/HuntManager.gd"
+
 [input]
 
 move_left={

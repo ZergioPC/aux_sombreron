@@ -52,6 +52,9 @@ func _ready() -> void:
 	perro.collision_mask = 0
 	perro.set_physics_process(false)
 
+	# Sincroniza el estado global con la forma inicial (Sombreron).
+	GameState.set_form(GameState.PlayerForm.SOMBRERON)
+
 
 # -------------------------
 # MAIN LOOP
@@ -68,6 +71,11 @@ func _process(_delta: float) -> void:
 # -------------------------
 
 func switch_character() -> void:
+
+	# El cambio de forma se ignora mientras esté bloqueado (por ejemplo,
+	# tras ser descubierto el Sombreron).
+	if not GameState.can_change_form():
+		return
 
 	match current_character:
 
@@ -106,6 +114,7 @@ func control_dog() -> void:
 	sombreron.collision_mask = 0
 
 	current_character = Character.PERRO
+	GameState.set_form(GameState.PlayerForm.DOG)
 
 # -------------------------
 # CONTROL SOMBRERON
@@ -132,3 +141,4 @@ func control_sombreron() -> void:
 	sombreron.collision_mask = sombreron_collision_mask
 	
 	current_character = Character.SOMBRERON
+	GameState.set_form(GameState.PlayerForm.SOMBRERON)

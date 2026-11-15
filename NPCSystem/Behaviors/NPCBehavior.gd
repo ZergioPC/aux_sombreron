@@ -9,6 +9,7 @@ extends Node
 
 const EVENT_THREAT_DETECTED := &"threat_detected"
 const EVENT_THREAT_LOST := &"threat_lost"
+const EVENT_PLAYER_DISCOVERED := &"player_discovered"
 
 ## Referencia al NPC que utiliza este comportamiento.
 var npc
@@ -29,3 +30,22 @@ func request_state(state_name: StringName) -> bool:
 	if npc == null:
 		return false
 	return npc.request_state(state_name)
+
+
+## Huye hacia la zona segura del NPC.
+##
+## Reacción común ante una amenaza o ante el descubrimiento del jugador. El
+## objetivo de caza nunca huye y un NPC sin zona segura solo registra una
+## advertencia.
+func flee_from_threat() -> void:
+	if npc == null:
+		return
+
+	if npc.is_hunt_target:
+		return
+
+	if not npc.has_safe_zone():
+		push_warning("NPC sin zona segura asignada.")
+		return
+
+	request_state(&"escape")
