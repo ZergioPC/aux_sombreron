@@ -1,6 +1,10 @@
 
 extends Node3D
 
+# Se emite cada vez que cambia el personaje controlado por el jugador.
+# La cámara de gameplay lo usa para hacer snap sobre la nueva forma.
+signal active_character_changed(character: Node3D)
+
 # -------------------------
 # REFERENCES
 # -------------------------
@@ -54,6 +58,20 @@ func _ready() -> void:
 
 	# Sincroniza el estado global con la forma inicial (Sombreron).
 	GameState.set_form(GameState.PlayerForm.SOMBRERON)
+
+	# Avisa de la forma activa inicial cuando los hijos ya están inicializados
+	# (la cámara de gameplay se conecta en su propio `_ready`).
+	active_character_changed.emit(get_active_character())
+
+
+# -------------------------
+# ACTIVE CHARACTER
+# -------------------------
+
+## Devuelve el nodo del personaje controlado actualmente.
+## La cámara de gameplay y otros sistemas lo usan como fuente de verdad.
+func get_active_character() -> Node3D:
+	return sombreron if current_character == Character.SOMBRERON else perro
 
 
 # -------------------------
@@ -116,6 +134,8 @@ func control_dog() -> void:
 	current_character = Character.PERRO
 	GameState.set_form(GameState.PlayerForm.DOG)
 
+	active_character_changed.emit(get_active_character())
+
 # -------------------------
 # CONTROL SOMBRERON
 # -------------------------
@@ -142,3 +162,5 @@ func control_sombreron() -> void:
 	
 	current_character = Character.SOMBRERON
 	GameState.set_form(GameState.PlayerForm.SOMBRERON)
+
+	active_character_changed.emit(get_active_character())

@@ -27,6 +27,13 @@ extends CharacterBody3D
 @export var pivote: Marker3D
 ## Zona de detección del ataque. Si queda vacía, se resuelve desde [member pivote].
 @export var attack_area: Area3D
+## Marcador global usado por la cámara cinemática. Si queda vacío, se resuelve
+## desde [member pivote].
+@export var cinematic_marker: Marker3D
+
+@export_group("Cinematic")
+## Identificador de la definición de cinemática solicitada al atacar.
+@export var cinematic_id: StringName = &"captura_sombreron"
 
 # -------------------------
 # STATES
@@ -52,6 +59,8 @@ var movement_direction: Vector3 = Vector3.ZERO
 var dash_direction: Vector3 = Vector3.ZERO
 
 var is_controlled: bool = false
+var _was_controlled_before_cinematic: bool = false
+
 # -------------------------
 # INITIALIZATION
 # -------------------------
@@ -256,21 +265,28 @@ func update_dash(delta: float) -> void:
 # -------------------------
 
 func start_attack() -> void:
+	var target := _find_hunt_target_in_attack_area()
 
-	# El ataque solo tiene efecto si hay un objetivo de caza dentro del área.
-	if _find_hunt_target_in_attack_area() == null:
+	# Sin objetivo de caza en el área no hay ataque ni cinemática.
+	if target == null:
 		_prepare_attack_miss_effect()
 		return
 
+	# El ataque solo solicita la cinemática. Toda transición, pausa, cámara,
+	# captura y restauración vive en el CinematicController.
+	var controller := get_tree().get_first_node_in_group(
+		&"cinematic_controller"
+	) as CinematicController
+
+	if controller != null and controller.play_cinematic(self, target, cinematic_id):
+		return
+
+	# Fallback: no hay controller o la cinemática no pudo iniciarse.
+	push_warning("Ataque sin cinemática: se ejecuta el ataque normal sin captura.")
 	action_timer = attack_duration
-	velocity.x = 0
-	velocity.z = 0
-
+	velocity.x = 0.0
+	velocity.z = 0.0
 	change_state(State.ATTACK)
-
-	# Reproducida la animación de ataque, arranca la cinemática de captura.
-	# El placeholder de la cinemática se encarga de la pausa y la captura.
-	GameState.begin_cinematic()
 
 
 ## Busca un NPC que sea el objetivo de caza dentro del AttackArea3D.
@@ -302,6 +318,63 @@ func apply_stun() -> void:
 	velocity.z = 0
 
 	change_state(State.STUN)
+
+
+# -------------------------
+# CINEMATIC
+# -------------------------
+
+## Devuelve el marcador global usado por la cámara cinemática.
+## Si el export está vacío, se resuelve desde el pivote.
+func get_cinematic_marker() -> Marker3D:
+	if cinematic_marker != null:
+		return cinematic_marker
+	if pivote != null:
+		cinematic_marker = pivote.get_node_or_null("CinematicMarker") as Marker3D
+	return cinematic_marker
+
+
+## Devuelve el AnimationPlayer del personaje para la cinemática.
+func get_animation_player() -> AnimationPlayer:
+	return animation_player
+
+
+## Detiene al personaje y reproduce el clip cinemático solicitado.
+## No cambia de cámara ni captura: eso pertenece al CinematicController.
+func begin_cinematic(animation_name: StringName) -> void:
+	_was_controlled_before_cinematic = is_controlled
+
+	set_controlled(false)
+	action_timer = 0.0
+	velocity.x = 0.0
+	velocity.z = 0.0
+
+	if animation_player == null:
+		return
+
+	var clip := animation_name
+
+	if not animation_player.has_animation(clip):
+		push_warning(
+			"Sombreron no tiene la animación '%s'; se usa 'idle'." % clip
+		)
+		clip = &"idle"
+
+	if animation_player.has_animation(clip):
+		animation_player.speed_scale = 1.0
+		animation_player.play(clip)
+
+
+## Restaura el estado tras la cinemática: idle, temporizadores y control.
+func end_cinematic() -> void:
+	action_timer = 0.0
+	current_state = State.IDLE
+	play_animation("idle", 1.0)
+
+	if _was_controlled_before_cinematic:
+		set_controlled(true)
+
+	_was_controlled_before_cinematic = false
 
 
 # -------------------------

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://cqcjfafijyups"]
+[gd_scene load_steps=9 format=3 uid="uid://cqcjfafijyups"]
 
 [ext_resource type="PackedScene" uid="uid://cwhqh4h0r3axf" path="res://Player/sombreron.tscn" id="1_56uwu"]
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_lfkgb"]
 [ext_resource type="Script" path="res://Player/Scripts/sombreron.gd" id="2_slwb0"]
 [ext_resource type="PackedScene" uid="uid://bmnskqo14y2ye" path="res://Player/perro.tscn" id="2_u4a5d"]
 [ext_resource type="Script" path="res://Player/Scripts/perro.gd" id="3_881ei"]
+[ext_resource type="Script" path="res://Player/Scripts/player_follow_camera.gd" id="4_camera"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rkpxw"]
 
@@ -49,6 +50,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.348579, 0)
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Perro"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.387553, 0.00415075)
 shape = SubResource("CapsuleShape3D_kfini")
+
+[node name="GameplayCameraPivot" type="Node3D" parent="."]
+script = ExtResource("4_camera")
+
+[node name="GameplayCamera" type="Camera3D" parent="GameplayCameraPivot" groups=["gameplay_camera"]]
+current = true
 
 [editable path="Sombreron/Sombreron"]
 [editable path="Perro/Perro"]

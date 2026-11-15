@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CinematicDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Game/Cinematics/CinematicDefinition.gd" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+id = &"captura_sombreron"
+camera_animation = &"captura_sombreron"
+attacker_animation = &"attack"
+target_animation = &"attack"

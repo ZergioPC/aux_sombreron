@@ -369,6 +369,49 @@ func play_animation(animation_name: StringName, speed_scale: float = 1.0) -> voi
 
 
 # -----------------------------------------------------------------------------
+# CINEMATIC
+# -----------------------------------------------------------------------------
+
+## Devuelve el AnimationPlayer del NPC para la cinemática.
+func get_animation_player() -> AnimationPlayer:
+	return _animation_player
+
+
+## Detiene el NPC y reproduce el clip cinemático solicitado.
+## Devuelve true si pudo reproducir algo. No cambia de cámara ni captura.
+func begin_cinematic(animation_name: StringName) -> bool:
+	stop_movement()
+	velocity = Vector3.ZERO
+
+	if _animation_player == null:
+		return false
+
+	var clip := animation_name
+
+	if not _animation_player.has_animation(clip):
+		push_warning(
+			"NPC '%s' no tiene la animación '%s'; se usa 'idle'." % [name, clip]
+		)
+		clip = &"idle"
+
+	if not _animation_player.has_animation(clip):
+		push_warning(
+			"NPC '%s' no tiene la animación de respaldo '%s'." % [name, clip]
+		)
+		return false
+
+	_animation_player.speed_scale = 1.0
+	_animation_player.play(clip)
+	return true
+
+
+## Restaura la animación base tras la cinemática. No reinicia la persecución
+## ni elige destinos; la pausa del árbol detuvo la IA durante la secuencia.
+func end_cinematic() -> void:
+	play_animation(idle_animation)
+
+
+# -----------------------------------------------------------------------------
 # INITIALIZATION HELPERS
 # -----------------------------------------------------------------------------
 

@@ -19,6 +19,7 @@ La animación definitiva de cámara **no forma parte de esta tarea**. El sistema
 
 ## 2. Decisiones cerradas
 
+- La camara es desde una perspectiva superior estilo top/down pero no completamente cenital, sino con una rotacion del 40%
 - El único disparador de cinemática es el ataque del Sombreron.
 - La condición exacta de disparo es la que ya existe: `_find_hunt_target_in_attack_area() != null`.
 - No se añaden validaciones extra de distancia u orientación que puedan rechazar un ataque que el `AttackArea3D` ya aceptó.
@@ -53,10 +54,10 @@ Player (Node3D, grupo "player")
 │   ├── CollisionShape3D
 │   └── AnimationMarker3D (Marker3D existente)
 └── Perro (CharacterBody3D, perro.gd)
-    ├── Perro (escena GLB instanciada)
-    │   ├── Empty → PerroRIG
-    │   └── AnimationPlayer
-    └── CollisionShape3D2
+	├── Perro (escena GLB instanciada)
+	│   ├── Empty → PerroRIG
+	│   └── AnimationPlayer
+	└── CollisionShape3D2
 ```
 
 Hechos importantes:
@@ -127,7 +128,7 @@ Añadir al final de `Player/player.tscn`:
 ```text
 Player
 └── GameplayCameraPivot (Node3D, player_follow_camera.gd)
-    └── GameplayCamera (Camera3D)
+	└── GameplayCamera (Camera3D)
 ```
 
 - `GameplayCameraPivot` es el nodo que se mueve y orienta.
