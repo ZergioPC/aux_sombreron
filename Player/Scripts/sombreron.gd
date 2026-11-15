@@ -11,6 +11,8 @@ extends CharacterBody3D
 @export var gravity: float = 20.0
 
 @export_group("Dash")
+## Tiempo que el jugador permanece quieto antes de desplazarse con el dash.
+@export var dash_windup: float = 0.15
 @export var dash_speed: float = 12.0
 @export var dash_duration: float = 0.25
 @export var dash_cooldown: float = 0.8
@@ -41,6 +43,7 @@ enum State {
 
 var current_state: State = State.IDLE
 
+var dash_windup_timer: float = 0.0
 var dash_timer: float = 0.0
 var dash_cooldown_timer: float = 0.0
 var action_timer: float = 0.0
@@ -192,18 +195,52 @@ func handle_movement(delta) -> void:
 
 func start_dash() -> void:
 
+	# Con entrada se usa la dirección de movimiento; sin entrada se usa hacia
+	# dónde está mirando el jugador (el pivote/modelo), no el eje del cuerpo.
 	if movement_direction != Vector3.ZERO:
-		dash_direction = movement_direction
+		dash_direction = movement_direction.normalized()
 	else:
-		dash_direction = -global_transform.basis.z
+		dash_direction = _get_facing_direction()
 
+	# Fase de preparación: el personaje se queda quieto antes de desplazarse.
+	dash_windup_timer = dash_windup
 	dash_timer = dash_duration
 	dash_cooldown_timer = dash_cooldown
+
+	velocity.x = 0.0
+	velocity.z = 0.0
 
 	change_state(State.DASH)
 
 
+## Devuelve la dirección horizontal hacia la que mira el jugador. El cuerpo no
+## rota, así que la orientación real vive en el pivote (o en el modelo).
+func _get_facing_direction() -> Vector3:
+	var reference: Node3D = pivote if pivote != null else model
+
+	if reference == null:
+		var fallback := -global_transform.basis.z
+		fallback.y = 0.0
+		return fallback.normalized()
+
+	var facing := reference.global_transform.basis.z
+	facing.y = 0.0
+
+	if facing.length_squared() < 0.0001:
+		facing = -global_transform.basis.z
+		facing.y = 0.0
+
+	return facing.normalized()
+
+
 func update_dash(delta: float) -> void:
+
+	# Mientras dura la preparación el jugador no se mueve.
+	if dash_windup_timer > 0.0:
+		dash_windup_timer -= delta
+		velocity.x = 0.0
+		velocity.z = 0.0
+		return
 
 	dash_timer -= delta
 
@@ -289,7 +326,7 @@ func change_state(new_state: State) -> void:
 			play_animation("run", 1.0)
 
 		State.DASH:
-			play_animation("dash" , 1.0)
+			play_animation("dash", 1.0)
 
 		State.ATTACK:
 			play_animation("attack", 1.0)
