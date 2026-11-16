@@ -293,6 +293,9 @@ func _restore(captured: bool, cancelled: bool) -> void:
 	GameState.end_cinematic()
 
 	if not cancelled:
+		# Los NPC no capturados vuelven a su spawn antes de elegir el nuevo
+		# objetivo, para que el target se seleccione con las posiciones finales.
+		HuntManager.reset_npcs_to_spawn()
 		HuntManager.continue_hunt()
 
 	var finished_id := _cinematic_id

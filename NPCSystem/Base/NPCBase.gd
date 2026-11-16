@@ -41,6 +41,15 @@ enum Classification {
 @export var navigation_agent: NavigationAgent3D
 @export var model: Node3D
 
+@export_group("Spawn")
+## Posición a la que vuelve el NPC al terminar una cinemática de captura.
+## Con [member use_scene_position_as_spawn] activo se sobrescribe en runtime con
+## la posición de la escena y solo sirve como lectura.
+@export var spawn_position: Vector3 = Vector3.ZERO
+## Toma la posición de aparición del transform de la escena. Desactívalo para
+## definir manualmente [member spawn_position] en el Inspector.
+@export var use_scene_position_as_spawn: bool = true
+
 var behavior: NPCBehavior
 var state_machine: NPCStateMachine
 var perception: NPCPerception
@@ -65,6 +74,12 @@ const DESTINATION_GRACE_TIME := 0.25
 
 func _ready() -> void:
 	add_to_group(&"npc")
+
+	# La posición de spawn se toma del transform de aparición antes de que la
+	# navegación o la IA puedan desplazar al NPC.
+	if use_scene_position_as_spawn:
+		spawn_position = global_position
+
 	_resolve_references()
 	_configure_perception()
 
@@ -294,6 +309,32 @@ func despawn() -> void:
 	collision_layer = 0
 	collision_mask = 0
 	queue_free()
+
+
+# -----------------------------------------------------------------------------
+# SPAWN
+# -----------------------------------------------------------------------------
+
+## Devuelve al NPC a su posición de aparición y reinicia su estado a Idle.
+##
+## Se usa al terminar una cinemática para que los NPC no capturados vuelvan a su
+## spawn y puedan ser elegidos como nuevo objetivo. No hace nada si el NPC ya
+## fue capturado o está en cola de liberación.
+func return_to_spawn() -> void:
+	if is_captured or is_queued_for_deletion():
+		return
+
+	stop_movement()
+	velocity = Vector3.ZERO
+	global_position = spawn_position
+
+	# Evita que una ruta de navegación pendiente lo aleje del spawn.
+	if navigation_agent != null:
+		navigation_agent.target_position = spawn_position
+
+	# Volver a Idle evita que un NPC en escape quede excluido como objetivo.
+	request_state(&"idle")
+	play_animation(idle_animation)
 
 
 # -----------------------------------------------------------------------------

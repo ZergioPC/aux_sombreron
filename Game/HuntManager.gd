@@ -19,6 +19,10 @@ const ESCAPE_STATE := &"escape"
 ## Objetivo de caza actual, o null si no hay ninguno.
 var current_target: NPCBase = null
 
+## Evita que la reaparición de NPC dispare una selección automática: el reset
+## elige el nuevo objetivo explícitamente al terminar.
+var _is_resetting: bool = false
+
 
 func _ready() -> void:
 	# Los NPC pueden añadirse más tarde; reaccionamos a su registro en el árbol.
@@ -58,7 +62,18 @@ func complete_current_target() -> void:
 		return
 
 	target.is_captured = true
+
+	# El capturado no debe volver a aparecer en el siguiente reset.
+	NPCRespawnManager.mark_captured(target)
+
 	target.despawn()
+
+	# Capturar al objetivo es el evento que libera el bloqueo de forma: permite
+	# volver al perro para continuar la caza con sigilo. Se usa unlock y no
+	# clear_discovery para que el descubrimiento ya ocurrido no vuelva a bloquear
+	# la forma al reposicionar a los NPC en su spawn.
+	GameState.unlock_form_change()
+
 	target_captured.emit(target)
 
 
@@ -67,6 +82,30 @@ func continue_hunt() -> void:
 	if GameState.is_cinematic_active:
 		return
 	select_random_target()
+
+
+## Devuelve a su posición de aparición a todos los NPC vivos no capturados.
+##
+## Se llama al terminar una cinemática de captura, antes de elegir un nuevo
+## objetivo, para que la selección se haga con los NPC ya reposicionados.
+func reset_npcs_to_spawn() -> void:
+	_is_resetting = true
+
+	# Los NPC que huyeron y desaparecieron vuelven a existir en su spawn.
+	NPCRespawnManager.respawn_missing()
+
+	for node in get_tree().get_nodes_in_group(&"npc"):
+		if not (node is NPCBase) or not is_instance_valid(node):
+			continue
+
+		var npc := node as NPCBase
+
+		if npc.is_captured or npc.is_queued_for_deletion():
+			continue
+
+		npc.return_to_spawn()
+
+	_is_resetting = false
 
 
 ## Indica si un NPC puede convertirse en objetivo de caza.
@@ -119,6 +158,9 @@ func _on_node_added(node: Node) -> void:
 	if not (node is NPCBase):
 		return
 
+	if _is_resetting:
+		return
+
 	if GameState.is_cinematic_active or current_target != null:
 		return
 
@@ -127,6 +169,9 @@ func _on_node_added(node: Node) -> void:
 		await node.ready
 
 	if not is_instance_valid(node):
+		return
+
+	if _is_resetting:
 		return
 
 	if current_target == null and not GameState.is_cinematic_active:
