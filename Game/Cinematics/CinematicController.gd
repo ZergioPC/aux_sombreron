@@ -407,7 +407,6 @@ func _build_definition_map() -> void:
 			)
 			continue
 
-
 		_definitions[definition.id] = definition
 
 
