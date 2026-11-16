@@ -53,6 +53,7 @@ enum Classification {
 var behavior: NPCBehavior
 var state_machine: NPCStateMachine
 var perception: NPCPerception
+var impact_receiver: Node
 
 ## Indica si este NPC es el objetivo de caza actual.
 var is_hunt_target: bool = false
@@ -108,6 +109,9 @@ func _physics_process(delta: float) -> void:
 		_follow_navigation_path(delta)
 	else:
 		_decelerate(delta)
+
+	if impact_receiver != null:
+		impact_receiver.integrate(delta)
 
 	move_and_slide()
 
@@ -466,6 +470,7 @@ func _resolve_references() -> void:
 	behavior = get_node_or_null("Behavior") as NPCBehavior
 	state_machine = get_node_or_null("StateMachine") as NPCStateMachine
 	perception = get_node_or_null("PerceptionArea") as NPCPerception
+	impact_receiver = get_node_or_null("ImpactReceiver")
 
 	_animation_player = _find_animation_player()
 
@@ -478,6 +483,14 @@ func _configure_perception() -> void:
 	if perception == null:
 		return
 	perception.set_detection_range(detection_range)
+
+
+## Aplica knockback al NPC delegando en el componente de impacto.
+## No modifica estados ni decide reacciones: solo ejecuta la física.
+func apply_knockback(direction_xz: Vector3, force: float) -> void:
+	if impact_receiver == null:
+		return
+	impact_receiver.apply_knockback(direction_xz, force)
 
 
 func _find_animation_player() -> AnimationPlayer:

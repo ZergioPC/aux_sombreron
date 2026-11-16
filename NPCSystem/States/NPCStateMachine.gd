@@ -29,7 +29,6 @@ func setup(owner_npc) -> void:
 			state.state_machine = self
 			states[state.get_state_name()] = state
 
-
 ## Activa el estado inicial del NPC.
 func start() -> void:
 	if current_state == null:

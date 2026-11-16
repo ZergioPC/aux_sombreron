@@ -21,6 +21,10 @@ extends CharacterBody3D
 @export var attack_duration: float = 0.7
 @export var stun_duration: float = 1.0
 
+@export_group("Knockback")
+## Decaimiento del empuje recibido por ataques enemigos, en unidades por segundo.
+@export var knockback_friction: float = 18.0
+
 @export_group("References")
 @export var animation_player: AnimationPlayer
 @export var model: Node3D
@@ -57,6 +61,7 @@ var action_timer: float = 0.0
 
 var movement_direction: Vector3 = Vector3.ZERO
 var dash_direction: Vector3 = Vector3.ZERO
+var knockback_velocity: Vector3 = Vector3.ZERO
 
 var is_controlled: bool = false
 var _was_controlled_before_cinematic: bool = false
@@ -92,6 +97,7 @@ func _physics_process(delta: float) -> void:
 	if not is_controlled:
 		velocity.x = 0.0
 		velocity.z = 0.0
+		_integrate_knockback(delta)
 		move_and_slide()
 		return
 	
@@ -102,6 +108,7 @@ func _physics_process(delta: float) -> void:
 	# Temporary actions
 	if current_state == State.DASH:
 		update_dash(delta)
+		_integrate_knockback(delta)
 		move_and_slide()
 		return
 
@@ -109,6 +116,7 @@ func _physics_process(delta: float) -> void:
 		action_timer -= delta
 		velocity.x = 0.0
 		velocity.z = 0.0
+		_integrate_knockback(delta)
 
 		if action_timer <= 0:
 			change_state(State.IDLE)
@@ -118,6 +126,7 @@ func _physics_process(delta: float) -> void:
 
 	# Normal movement
 	handle_movement(delta)
+	_integrate_knockback(delta)
 	move_and_slide()
 
 
@@ -311,13 +320,45 @@ func _prepare_attack_miss_effect() -> void:
 # STUN
 # -------------------------
 
-func apply_stun() -> void:
-
-	action_timer = stun_duration
-	velocity.x = 0
-	velocity.z = 0
-
+## Aplica aturdimiento al Sombrerón. Si no se indica duración, usa la del export.
+func apply_stun(duration: float = -1.0) -> void:
+	action_timer = stun_duration if duration <= 0.0 else duration
+	velocity.x = 0.0
+	velocity.z = 0.0
 	change_state(State.STUN)
+
+
+# -------------------------
+# KNOCKBACK
+# -------------------------
+
+## Aplica un empuje externo en el plano XZ con decaimiento progresivo.
+func apply_knockback(direction_xz: Vector3, force: float) -> void:
+	var direction := direction_xz
+	direction.y = 0.0
+
+	if direction.length_squared() <= 0.0001:
+		return
+
+	direction = direction.normalized()
+	knockback_velocity += direction * maxf(force, 0.0)
+
+
+## Integra y decae el knockback sin afectar la velocidad vertical.
+func _integrate_knockback(delta: float) -> void:
+	if knockback_velocity.length_squared() <= 0.0001:
+		knockback_velocity = Vector3.ZERO
+		return
+
+	velocity.x += knockback_velocity.x
+	velocity.z += knockback_velocity.z
+
+	var current_speed := knockback_velocity.length()
+	var new_speed := move_toward(current_speed, 0.0, knockback_friction * delta)
+	knockback_velocity = knockback_velocity.normalized() * new_speed
+
+	if new_speed <= 0.01:
+		knockback_velocity = Vector3.ZERO
 
 
 # -------------------------

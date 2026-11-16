@@ -1,12 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://cknalse3hxgqa"]
+[gd_scene load_steps=9 format=3 uid="uid://cknalse3hxgqa"]
 
 [ext_resource type="PackedScene" path="res://NPCSystem/Base/NPCBase.tscn" id="1_base"]
 [ext_resource type="PackedScene" uid="uid://bksaypiu6el3u" path="res://Entities/Peleador/Modelo3D/Peleador_Model.tscn" id="2_model"]
 [ext_resource type="Script" path="res://NPCSystem/Behaviors/FighterBehavior.gd" id="3_fighter"]
+[ext_resource type="Script" path="res://NPCSystem/States/Attack.gd" id="4_attack"]
+[ext_resource type="Script" path="res://NPCSystem/Components/NPCImpactReceiver.gd" id="5_impact"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_peleador"]
 radius = 0.4
 height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_trigger"]
+radius = 5.86736
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_impact"]
+radius = 4.01163
 
 [node name="Peleador" instance=ExtResource("1_base")]
 classification = 1
@@ -19,3 +27,34 @@ shape = SubResource("CapsuleShape3D_peleador")
 
 [node name="Behavior" parent="." index="6"]
 script = ExtResource("3_fighter")
+attack_trigger_area = NodePath("../AttackTriggerArea")
+attack_knockback_force = 30.0
+attack_player_stun_duration = 3.0
+
+[node name="Idle" parent="StateMachine" index="0"]
+allowed_transitions = PackedStringArray("escape", "attack")
+
+[node name="Escape" parent="StateMachine" index="1"]
+allowed_transitions = PackedStringArray("idle", "attack")
+
+[node name="Attack" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("4_attack")
+impact_area = NodePath("../../AttackImpactArea")
+allowed_transitions = PackedStringArray("escape", "idle")
+
+[node name="ImpactReceiver" type="Node" parent="." index="8"]
+script = ExtResource("5_impact")
+
+[node name="AttackTriggerArea" type="Area3D" parent="." index="9"]
+collision_layer = 0
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackTriggerArea" index="0"]
+shape = SubResource("SphereShape3D_trigger")
+
+[node name="AttackImpactArea" type="Area3D" parent="." index="10"]
+collision_layer = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackImpactArea" index="0"]
+shape = SubResource("SphereShape3D_impact")
