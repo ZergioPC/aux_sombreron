@@ -276,22 +276,36 @@ func update_dash(delta: float) -> void:
 func start_attack() -> void:
 	var target := _find_hunt_target_in_attack_area()
 
-	# Sin objetivo de caza en el área no hay ataque ni cinemática.
-	if target == null:
-		_prepare_attack_miss_effect()
+	# 1. Objetivo de caza en el área: cinemática de captura.
+	if target != null:
+		# El ataque solo solicita la cinemática. Toda transición, pausa, cámara,
+		# captura y restauración vive en el CinematicController.
+		var controller := get_tree().get_first_node_in_group(
+			&"cinematic_controller"
+		) as CinematicController
+
+		if controller != null and controller.play_cinematic(self, target, cinematic_id):
+			return
+
+		# Fallback: no hay controller o la cinemática no pudo iniciarse.
+		push_warning("Ataque sin cinemática: se ejecuta el ataque normal sin captura.")
+		_play_normal_attack()
 		return
 
-	# El ataque solo solicita la cinemática. Toda transición, pausa, cámara,
-	# captura y restauración vive en el CinematicController.
-	var controller := get_tree().get_first_node_in_group(
-		&"cinematic_controller"
-	) as CinematicController
+	# 2. Señuelo en el área: desaparece sin cinemática ni pausa.
+	var decoy := _find_decoy_in_attack_area()
 
-	if controller != null and controller.play_cinematic(self, target, cinematic_id):
+	if decoy != null:
+		decoy.break_decoy()
+		_play_normal_attack()
 		return
 
-	# Fallback: no hay controller o la cinemática no pudo iniciarse.
-	push_warning("Ataque sin cinemática: se ejecuta el ataque normal sin captura.")
+	# 3. Sin objetivo ni señuelo no hay ataque ni cinemática.
+	_prepare_attack_miss_effect()
+
+
+## Ejecuta el ataque normal del Sombrerón, sin captura ni pausa del árbol.
+func _play_normal_attack() -> void:
 	action_timer = attack_duration
 	velocity.x = 0.0
 	velocity.z = 0.0
@@ -305,6 +319,18 @@ func _find_hunt_target_in_attack_area() -> NPCBase:
 
 	for body in attack_area.get_overlapping_bodies():
 		if body is NPCBase and body.is_hunt_target:
+			return body
+
+	return null
+
+
+## Busca un señuelo del tramposo dentro del AttackArea3D.
+func _find_decoy_in_attack_area() -> NPCBase:
+	if attack_area == null:
+		return null
+
+	for body in attack_area.get_overlapping_bodies():
+		if body is NPCBase and body.is_decoy:
 			return body
 
 	return null

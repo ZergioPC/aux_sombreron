@@ -100,6 +100,12 @@ func reset_npcs_to_spawn() -> void:
 
 		var npc := node as NPCBase
 
+		# Los señuelos no tienen spawn propio ni deben sobrevivir al reset.
+		if npc.is_decoy:
+			if not npc.is_queued_for_deletion():
+				npc.despawn()
+			continue
+
 		if npc.is_captured or npc.is_queued_for_deletion():
 			continue
 
@@ -113,16 +119,22 @@ func is_available_for_hunt(npc: Node) -> bool:
 	if not (npc is NPCBase) or not is_instance_valid(npc):
 		return false
 
-	if npc.classification != NPCBase.Classification.ENEMY:
+	var candidate := npc as NPCBase
+
+	# Los señuelos nunca son objetivos de caza.
+	if candidate.is_decoy:
 		return false
 
-	if npc.is_queued_for_deletion() or npc.is_captured:
+	if candidate.classification != NPCBase.Classification.ENEMY:
 		return false
 
-	if npc == current_target:
+	if candidate.is_queued_for_deletion() or candidate.is_captured:
 		return false
 
-	if _is_escaping(npc):
+	if candidate == current_target:
+		return false
+
+	if _is_escaping(candidate):
 		return false
 
 	return true
@@ -143,6 +155,11 @@ func reset() -> void:
 func _start_hunt() -> void:
 	await get_tree().process_frame
 
+	# Conecta escapes de NPC que ya estuvieran en la escena.
+	for node in get_tree().get_nodes_in_group(&"npc"):
+		if node is NPCBase and not (node as NPCBase).is_decoy:
+			_connect_escaped_signal(node as NPCBase)
+
 	if current_target != null or GameState.is_cinematic_active:
 		return
 
@@ -158,6 +175,14 @@ func _on_node_added(node: Node) -> void:
 	if not (node is NPCBase):
 		return
 
+	var npc := node as NPCBase
+
+	# Los señuelos no participan en la selección de objetivos.
+	if npc.is_decoy:
+		return
+
+	_connect_escaped_signal(npc)
+
 	if _is_resetting:
 		return
 
@@ -165,10 +190,10 @@ func _on_node_added(node: Node) -> void:
 		return
 
 	# node_added se emite antes del _ready del NPC, donde se une al grupo "npc".
-	if not node.is_node_ready():
-		await node.ready
+	if not npc.is_node_ready():
+		await npc.ready
 
-	if not is_instance_valid(node):
+	if not is_instance_valid(npc):
 		return
 
 	if _is_resetting:
@@ -176,6 +201,25 @@ func _on_node_added(node: Node) -> void:
 
 	if current_target == null and not GameState.is_cinematic_active:
 		select_random_target()
+
+
+## Conecta la señal de escape para que un objetivo que huye sin ser capturado
+## no deje una referencia liberada en [member current_target].
+func _connect_escaped_signal(npc: NPCBase) -> void:
+	if npc == null or not is_instance_valid(npc):
+		return
+
+	if not npc.escaped.is_connected(_on_npc_escaped):
+		npc.escaped.connect(_on_npc_escaped)
+
+
+func _on_npc_escaped(npc: NPCBase) -> void:
+	if npc != current_target:
+		return
+
+	# El NPC está a punto de desaparecer: soltar el objetivo y elegir otro.
+	_set_current_target(null)
+	select_random_target.call_deferred()
 
 
 # -----------------------------------------------------------------------------

@@ -12,11 +12,25 @@ enum Classification {
 	ENEMY,
 }
 
+## Se emite cuando el NPC llega a su zona segura y desaparece sin ser capturado.
+signal escaped(npc: NPCBase)
+## Se emite cuando un señuelo es destruido por un ataque del jugador.
+signal decoy_broken(decoy: NPCBase)
+
 @export_group("Configuration")
 ## Clasificación del NPC. No determina por sí sola su comportamiento.
 @export var classification: Classification = Classification.NORMAL
 ## Zona segura individual del NPC. Puede quedar vacía.
 @export var safe_zone: Node3D
+
+@export_group("Role")
+## Marca al NPC como señuelo: no es candidato de caza, no se registra para
+## reaparición y se destruye al recibir un ataque del jugador.
+@export var is_decoy: bool = false
+## Si está desactivado, NPCRespawnManager no guarda un plano de este NPC.
+@export var register_for_respawn: bool = true
+## Componente opcional para los efectos de aparición y desaparición.
+@export var effect_emitter: Node
 
 @export_group("Movement")
 ## Velocidad usada al caminar (por ejemplo, durante el estado Idle).
@@ -76,6 +90,9 @@ const DESTINATION_GRACE_TIME := 0.25
 func _ready() -> void:
 	add_to_group(&"npc")
 
+	if is_decoy:
+		add_to_group(&"npc_decoy")
+
 	# La posición de spawn se toma del transform de aparición antes de que la
 	# navegación o la IA puedan desplazar al NPC.
 	if use_scene_position_as_spawn:
@@ -92,6 +109,9 @@ func _ready() -> void:
 	if state_machine != null:
 		state_machine.setup(self)
 		state_machine.start()
+
+	# Hook de efectos: hoy las escenas están vacías, pero el enganche ya existe.
+	_play_effect(&"play_spawn_effect")
 
 	# Si el jugador ya había sido descubierto antes de que este NPC apareciera,
 	# hay que notificarlo para que reaccione igual que el resto.
@@ -302,17 +322,52 @@ func set_hunt_target(value: bool) -> void:
 
 
 # -----------------------------------------------------------------------------
+# DECOY AND ESCAPE
+# -----------------------------------------------------------------------------
+
+## Destruye un señuelo al recibir un ataque del jugador.
+## Solo actúa si el NPC está marcado como señuelo. Devuelve true si lo destruyó.
+func break_decoy() -> bool:
+	if not is_decoy or is_queued_for_deletion():
+		return false
+
+	decoy_broken.emit(self)
+	despawn()
+	return true
+
+
+## Notifica que el NPC llegó a su zona segura y va a desaparecer sin ser
+## capturado. [HuntManager] usa esta señal para no conservar una referencia
+## liberada como objetivo de caza.
+func notify_escaped() -> void:
+	escaped.emit(self)
+
+
+# -----------------------------------------------------------------------------
 # DESPAWN
 # -----------------------------------------------------------------------------
 
 ## Hace desaparecer al NPC de forma inmediata.
 func despawn() -> void:
+	# El efecto se reproduce antes de ocultar y liberar, en la escena actual,
+	# para que no desaparezca junto con el NPC.
+	_play_effect(&"play_despawn_effect")
+
 	stop_movement()
 	visible = false
 	set_physics_process(false)
 	collision_layer = 0
 	collision_mask = 0
 	queue_free()
+
+
+## Llama a un método del emisor de efectos sin acoplar NPCBase a su clase.
+func _play_effect(method_name: StringName) -> void:
+	if effect_emitter == null or not is_instance_valid(effect_emitter):
+		return
+
+	if effect_emitter.has_method(method_name):
+		effect_emitter.call(method_name, global_position)
 
 
 # -----------------------------------------------------------------------------
@@ -471,6 +526,9 @@ func _resolve_references() -> void:
 	state_machine = get_node_or_null("StateMachine") as NPCStateMachine
 	perception = get_node_or_null("PerceptionArea") as NPCPerception
 	impact_receiver = get_node_or_null("ImpactReceiver")
+
+	if effect_emitter == null:
+		effect_emitter = get_node_or_null("EffectEmitter")
 
 	_animation_player = _find_animation_player()
 

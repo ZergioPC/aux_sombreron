@@ -42,6 +42,8 @@ func update(_delta: float) -> void:
 	if npc.has_reached_destination():
 		_arrived = true
 		npc.stop_movement()
+		# Avisa antes de desaparecer para que HuntManager suelte el objetivo.
+		npc.notify_escaped()
 		npc.despawn()
 
 

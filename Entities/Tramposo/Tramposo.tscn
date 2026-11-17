@@ -1,12 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://ui8f0iwkli4l"]
+[gd_scene load_steps=8 format=3 uid="uid://ui8f0iwkli4l"]
 
 [ext_resource type="PackedScene" path="res://NPCSystem/Base/NPCBase.tscn" id="1_base"]
 [ext_resource type="PackedScene" uid="uid://g2xrfhi1uvbd" path="res://Entities/Tramposo/Modelo3D/Tramposo_Model.tscn" id="2_model"]
 [ext_resource type="Script" path="res://NPCSystem/Behaviors/TricksterBehavior.gd" id="3_trickster"]
+[ext_resource type="Script" path="res://NPCSystem/States/TricksterAttack.gd" id="4_trickster_attack"]
+[ext_resource type="PackedScene" path="res://Entities/Tramposo/TramposoClone.tscn" id="5_clone"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tramposo"]
 radius = 0.4
 height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_clone_trigger"]
+radius = 3.0
 
 [node name="Tramposo" instance=ExtResource("1_base")]
 classification = 1
@@ -19,3 +24,23 @@ shape = SubResource("CapsuleShape3D_tramposo")
 
 [node name="Behavior" parent="." index="6"]
 script = ExtResource("3_trickster")
+clone_trigger_area = NodePath("../CloneTriggerArea")
+
+[node name="Idle" parent="StateMachine" index="0"]
+allowed_transitions = PackedStringArray("escape", "attack")
+
+[node name="Escape" parent="StateMachine" index="1"]
+allowed_transitions = PackedStringArray("idle", "attack")
+
+[node name="Attack" type="Node" parent="StateMachine" index="2"]
+script = ExtResource("4_trickster_attack")
+clone_scene = ExtResource("5_clone")
+allowed_transitions = PackedStringArray("escape", "idle")
+
+[node name="CloneTriggerArea" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CloneTriggerArea"]
+shape = SubResource("SphereShape3D_clone_trigger")

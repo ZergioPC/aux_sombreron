@@ -45,6 +45,11 @@ func _on_node_added(node: Node) -> void:
 	if not is_instance_valid(npc):
 		return
 
+	# Los señuelos y cualquier NPC marcado como no registrable (clones,
+	# invocaciones temporales) no deben reaparecer en el reset.
+	if npc.is_decoy or not npc.register_for_respawn:
+		return
+
 	_register(npc)
 
 

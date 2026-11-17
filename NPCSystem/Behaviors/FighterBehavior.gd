@@ -116,7 +116,7 @@ func flee_from_threat() -> void:
 
 
 func _on_attack_trigger_entered(body: Node) -> void:
-	if not _is_valid_player_body(body):
+	if not is_valid_player_body(body):
 		return
 
 	_player_in_attack_trigger = true
@@ -124,7 +124,7 @@ func _on_attack_trigger_entered(body: Node) -> void:
 
 
 func _on_attack_trigger_exited(body: Node) -> void:
-	if not _is_valid_player_body(body):
+	if not is_valid_player_body(body):
 		return
 
 	_player_in_attack_trigger = _is_player_still_in_trigger()
@@ -210,14 +210,14 @@ func _is_player_still_in_trigger() -> bool:
 		return false
 
 	for body in attack_trigger_area.get_overlapping_bodies():
-		if _is_valid_player_body(body):
+		if is_valid_player_body(body):
 			return true
 
 	return false
 
 
 func _on_trigger_body_entered(body: Node3D) -> void:
-	if not _is_valid_player_body(body):
+	if not is_valid_player_body(body):
 		return
 	if npc == null:
 		return
@@ -228,8 +228,9 @@ func _on_trigger_body_entered(body: Node3D) -> void:
 	})
 
 
+## El trigger de ataque reutiliza los helpers de NPCBehavior.
 func _on_trigger_body_exited(body: Node3D) -> void:
-	if not _is_valid_player_body(body):
+	if not is_valid_player_body(body):
 		return
 	if npc == null:
 		return
@@ -238,37 +239,3 @@ func _on_trigger_body_exited(body: Node3D) -> void:
 		"name": EVENT_ATTACK_TRIGGER_EXITED,
 		"source": body,
 	})
-
-
-## El trigger de ataque solo reacciona al jugador (Sombrerón).
-func _is_valid_player_body(body: Node) -> bool:
-	if body == null or not is_instance_valid(body):
-		return false
-
-	if not _is_player_body(body):
-		return false
-
-	if not _is_sombreron_body(body):
-		return false
-
-	return true
-
-
-func _is_player_body(body: Node) -> bool:
-	var current: Node = body
-	while current != null:
-		if current.is_in_group(&"player"):
-			return true
-		current = current.get_parent()
-	return false
-
-
-func _is_sombreron_body(body: Node) -> bool:
-	var current: Node = body
-	while current != null:
-		if current.name == &"Sombreron":
-			return true
-		if current.get_script() != null and String(current.get_script().resource_path).ends_with("sombreron.gd"):
-			return true
-		current = current.get_parent()
-	return false

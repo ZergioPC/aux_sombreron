@@ -49,3 +49,45 @@ func flee_from_threat() -> void:
 		return
 
 	request_state(&"escape")
+
+
+# -----------------------------------------------------------------------------
+# PLAYER IDENTIFICATION
+# -----------------------------------------------------------------------------
+
+## Indica si el cuerpo pertenece al jugador (nodo raíz o cualquiera de sus hijos).
+func is_player_body(body: Node) -> bool:
+	var current: Node = body
+	while current != null:
+		if current.is_in_group(&"player"):
+			return true
+		current = current.get_parent()
+	return false
+
+
+## Indica si el cuerpo corresponde a la forma Sombrerón del jugador.
+func is_sombreron_body(body: Node) -> bool:
+	var current: Node = body
+	while current != null:
+		if current.name == &"Sombreron":
+			return true
+		if (
+			current.get_script() != null
+			and String(current.get_script().resource_path).ends_with(
+				"sombreron.gd"
+			)
+		):
+			return true
+		current = current.get_parent()
+	return false
+
+
+## El jugador válido para triggers de NPC es el Sombrerón (no el perro).
+func is_valid_player_body(body: Node) -> bool:
+	if body == null or not is_instance_valid(body):
+		return false
+
+	if not is_player_body(body):
+		return false
+
+	return is_sombreron_body(body)
