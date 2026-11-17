@@ -42,6 +42,11 @@ signal decoy_broken(decoy: NPCBase)
 @export var gravity: float = 20.0
 @export var arrival_distance: float = 0.6
 
+@export_group("Movement Modifier")
+## Componente opcional que altera la dirección y la velocidad deseadas.
+## Si se deja vacío, se resuelve automáticamente por el nodo "MovementModifier".
+@export var movement_modifier: NPCMovementModifier
+
 @export_group("Perception")
 @export var detection_range: float = 6.0
 
@@ -148,6 +153,9 @@ func move_to_position(target_position: Vector3, speed: float = -1.0) -> void:
 		stop_movement()
 		return
 
+	if movement_modifier != null:
+		movement_modifier.reset()
+
 	_movement_speed = walk_speed if speed <= 0.0 else speed
 	_destination = target_position
 	_has_destination = true
@@ -158,6 +166,9 @@ func move_to_position(target_position: Vector3, speed: float = -1.0) -> void:
 
 ## Detiene el desplazamiento actual y anula la velocidad horizontal.
 func stop_movement() -> void:
+	if movement_modifier != null:
+		movement_modifier.reset()
+
 	_is_moving = false
 	_has_destination = false
 	_movement_elapsed = 0.0
@@ -279,8 +290,20 @@ func _follow_navigation_path(delta: float) -> void:
 
 	direction = direction.normalized()
 
-	velocity.x = move_toward(velocity.x, direction.x * _movement_speed, acceleration * delta)
-	velocity.z = move_toward(velocity.z, direction.z * _movement_speed, acceleration * delta)
+	var desired_speed := _movement_speed
+
+	if movement_modifier != null:
+		var remaining_distance := global_position.distance_to(_destination)
+		var modified: Dictionary = movement_modifier.modify_movement(
+			direction, desired_speed, delta, remaining_distance
+		)
+		var modified_direction: Vector3 = modified.get("direction", direction)
+		var modified_speed: float = modified.get("speed", desired_speed)
+		direction = modified_direction
+		desired_speed = modified_speed
+
+	velocity.x = move_toward(velocity.x, direction.x * desired_speed, acceleration * delta)
+	velocity.z = move_toward(velocity.z, direction.z * desired_speed, acceleration * delta)
 
 	_rotate_model_towards(direction, delta)
 
@@ -521,6 +544,9 @@ func _resolve_references() -> void:
 
 	if model == null:
 		model = get_node_or_null("Model") as Node3D
+
+	if movement_modifier == null:
+		movement_modifier = get_node_or_null("MovementModifier") as NPCMovementModifier
 
 	behavior = get_node_or_null("Behavior") as NPCBehavior
 	state_machine = get_node_or_null("StateMachine") as NPCStateMachine

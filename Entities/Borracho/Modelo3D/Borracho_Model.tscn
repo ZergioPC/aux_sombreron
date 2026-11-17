@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bdo3ft8bsg41g" path="res://Entities/Borracho/Modelo3D/Borracho_animation.glb" id="1_borracho"]
+
+[node name="Borracho_animation" instance=ExtResource("1_borracho")]

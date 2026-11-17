@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="PackedScene" path="res://NPCSystem/Base/NPCBase.tscn" id="1_base"]
+[ext_resource type="PackedScene" path="res://Entities/Borracho/Modelo3D/Borracho_Model.tscn" id="2_model"]
+[ext_resource type="Script" path="res://NPCSystem/Behaviors/NormalBehavior.gd" id="3_normal"]
+[ext_resource type="Script" path="res://NPCSystem/Components/NPCErraticMovement.gd" id="4_erratic"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_borracho"]
+radius = 0.4
+height = 2.0
+
+[node name="Borracho" instance=ExtResource("1_base")]
+classification = 1
+walk_speed = 1.1
+run_speed = 2.6
+acceleration = 8.0
+rotation_speed = 5.0
+arrival_distance = 0.8
+detection_range = 5.0
+idle_animation = &"BorrachoRIG|BorrachoRIG|BorrachoAction|BorrachoRIG|BorrachoActi"
+walk_animation = &"BorrachoRIG|BorrachoRIG|BorrachoAction|BorrachoRIG|BorrachoActi"
+escape_animation = &"BorrachoRIG|BorrachoRIG|BorrachoAction|BorrachoRIG|BorrachoActi"
+
+[node name="Borracho_animation" parent="Model" index="0" instance=ExtResource("2_model")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0.708, 0)
+
+[node name="CollisionShape3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_borracho")
+
+[node name="Behavior" parent="." index="6"]
+script = ExtResource("3_normal")
+
+[node name="Idle" parent="StateMachine" index="0"]
+max_walk_distance = 8.0
+max_walk_time = 20.0
+
+[node name="MovementModifier" type="Node" parent="."]
+script = ExtResource("4_erratic")
